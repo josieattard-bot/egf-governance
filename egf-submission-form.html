@@ -585,13 +585,14 @@
           <label class="field-label">Project Sentinel tier</label>
           <select id="sentinel_tier">
             <option value="">Select if known…</option>
-            <option>Small (~5 orgs)</option>
-            <option>Medium (~50 orgs)</option>
-            <option>Large (~1,000 orgs)</option>
-            <option>Enterprise 1 (~10,000 orgs)</option>
-            <option>Enterprise 2 (~20,000 orgs)</option>
-            <option>Enterprise 3 (~50,000 orgs)</option>
-            <option>Enterprise 4 (~100,000 orgs)</option>
+            <option>Core (50 orgs)</option>
+            <option>Plus (1000 orgs)</option>
+            <option>Advanced (10,000 orgs)</option>
+            <option>Enterprise 1 (20,000 orgs)</option>
+            <option>Enterprise 2 (500,000 orgs)</option>
+            <option>Enterprise 3 (100,000 orgs)</option>
+            <option>Enterprise 4 (250,000 orgs)</option>
+            <option>Enterprise 5 (500,000 orgs)</option>
             <option>Bespoke</option>
             <option>Not yet assessed</option>
           </select>
@@ -661,11 +662,11 @@
         <label class="check-card"><input type="checkbox" name="apis" value="xpm" /> XPM (Practice Manager)</label>
         <label class="check-card"><input type="checkbox" name="apis" value="journals" /> Journals</label>
         <label class="check-card"><input type="checkbox" name="apis" value="invoices" /> Invoices</label>
-        <label class="check-card"><input type="checkbox" name="apis" value="contacts" /> Contacts</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="bills" /> Bills</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="invoices/bills" /> Payment Gateeway</label>
         <label class="check-card"><input type="checkbox" name="apis" value="payroll" /> Payroll</label>
         <label class="check-card"><input type="checkbox" name="apis" value="bank_feeds" /> Bank feeds</label>
         <label class="check-card"><input type="checkbox" name="apis" value="files" /> Files / Attachments</label>
-        <label class="check-card"><input type="checkbox" name="apis" value="organisation" /> Organisation</label>
         <label class="check-card"><input type="checkbox" name="apis" value="other_api" /> Other</label>
       </div>
 
@@ -695,7 +696,7 @@
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
           <label class="check-card"><input type="checkbox" id="check_2way" /> Agrees to 2-way sync for client record and Xero orgs</label>
           <label class="check-card"><input type="checkbox" id="check_datause" /> Agrees to responsible data use approach</label>
-          <label class="check-card"><input type="checkbox" id="check_competitors" /> Integrates with Xero practice competitors</label>
+          <label class="check-card"><input type="checkbox" id="check_competitors" /> Integrates with Xero competitors</label>
           <label class="check-card"><input type="checkbox" id="check_devterms" /> Currently compliant with Xero Developer Terms</label>
         </div>
       </div>
@@ -789,10 +790,7 @@
         <select id="commercial_terms">
           <option value="">Select if applicable…</option>
           <option>Project Sentinel — standard tier pricing</option>
-          <option>Project Sentinel + overages</option>
           <option>Bespoke / custom pricing</option>
-          <option>XAS revenue share</option>
-          <option>APS DataSync (~$1 per org/month)</option>
           <option>No commercial terms required</option>
           <option>TBD / to be negotiated</option>
         </select>
@@ -803,7 +801,7 @@
       <div style="display:flex;flex-direction:column;gap:8px;">
         <label class="check-card"><input type="checkbox" id="legal_terms" /> Developer Terms breach identified and documented in problem summary</label>
         <label class="check-card"><input type="checkbox" id="legal_consistency" /> Consistency check completed against prior decisions for similar apps (e.g. MYOB, HandiSoft, Common Ledger)</label>
-        <label class="check-card"><input type="checkbox" id="legal_reviewed" /> Legal has been consulted (Ben Jacobs / Katie Dewar)</label>
+        <label class="check-card"><input type="checkbox" id="legal_reviewed" /> Legal has been consulted (Katie Dewar)</label>
         <label class="check-card"><input type="checkbox" id="legal_notice" /> Notice period requirements confirmed — minimum 60 days for breaking API changes</label>
         <label class="check-card"><input type="checkbox" id="legal_anticomp" /> Anti-competitive language check completed — decision rationale reflects Xero's legitimate commercial interests only</label>
       </div>
