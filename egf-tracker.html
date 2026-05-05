@@ -4,126 +4,119 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>EGF — Submissions Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --ink: #1a1a1a; --ink-mid: #555; --ink-light: #888; --ink-ghost: #bbb;
-    --surface: #fafaf8; --white: #fff; --rule: #e8e6e1; --accent-soft: #f0ede8;
-    --warn: #c45c1a; --warn-bg: #fef4ec;
-    --info: #1a5c8a; --info-bg: #ecf4fd;
-    --success: #1a6b3a; --success-bg: #ecfdf4;
-    --danger: #c42b1a; --danger-bg: #fdf0ee;
-    --purple: #5c3ab5; --purple-bg: #f0ecfd;
-    --radius: 6px; --radius-lg: 10px;
-  }
-  html { font-size: 15px; }
-  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--surface); color: var(--ink); min-height: 100vh; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1a1a; --ink-mid: #555; --ink-light: #888; --ink-ghost: #bbb;
+  --surface: #fafaf8; --white: #fff; --rule: #e8e6e1; --accent: #f0ede8;
+  --warn: #c45c1a; --warn-bg: #fef4ec;
+  --info: #1a5c8a; --info-bg: #ecf4fd;
+  --success: #1a6b3a; --success-bg: #ecfdf4;
+  --danger: #c42b1a; --danger-bg: #fdf0ee;
+  --purple: #5b3fa8; --purple-bg: #f2effe;
+  --radius: 6px; --radius-lg: 10px;
+}
+html { font-size: 15px; }
+body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--surface); color: var(--ink); }
 
-  /* HEADER */
-  .site-header { background: var(--ink); color: var(--white); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
-  .brand { font-family: 'DM Serif Display', serif; font-size: 17px; }
-  .brand span { opacity: 0.45; margin: 0 6px; }
-  .header-nav { display: flex; gap: 4px; }
-  .nav-link { color: rgba(255,255,255,0.5); font-size: 12px; padding: 6px 12px; border-radius: var(--radius); text-decoration: none; transition: all 0.15s; }
-  .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
-  .nav-link.active { color: white; background: rgba(255,255,255,0.15); }
+.site-header { background: var(--ink); color: #fff; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.brand { font-family: 'DM Serif Display', serif; font-size: 17px; }
+.brand span { opacity: 0.4; margin: 0 6px; }
+.header-nav { display: flex; gap: 4px; }
+.nav-link { color: rgba(255,255,255,0.45); font-size: 12px; padding: 6px 12px; border-radius: var(--radius); text-decoration: none; transition: all 0.15s; }
+.nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.12); }
 
-  /* TOOLBAR */
-  .toolbar { background: var(--white); border-bottom: 1px solid var(--rule); padding: 14px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .toolbar-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-right: 8px; }
-  .toolbar-spacer { flex: 1; }
-  .search-box { padding: 7px 12px 7px 32px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; width: 220px; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center; outline: none; }
-  .search-box:focus { border-color: var(--ink); background-color: var(--white); }
-  .filter-select { padding: 7px 28px 7px 10px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink-mid); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E") no-repeat right 8px center; -webkit-appearance: none; cursor: pointer; outline: none; }
-  .btn-add { background: var(--ink); color: var(--white); border: none; padding: 8px 16px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-  .btn-add:hover { background: #333; }
+.loading-bar { height: 3px; background: linear-gradient(90deg, var(--ink) 0%, #888 50%, var(--ink) 100%); background-size: 200% 100%; animation: shimmer 1.2s infinite; display: none; }
+.loading-bar.show { display: block; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-  /* STATS ROW */
-  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--rule); border-bottom: 1px solid var(--rule); }
-  .stat-cell { background: var(--white); padding: 14px 20px; }
-  .stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 4px; }
-  .stat-value { font-size: 22px; font-weight: 500; color: var(--ink); }
-  .stat-sub { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+.error-bar { background: var(--danger-bg); color: var(--danger); padding: 10px 32px; font-size: 13px; border-bottom: 1px solid #f5c6c2; display: none; }
+.error-bar.show { display: block; }
 
-  /* TABLE */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead { background: var(--white); border-bottom: 2px solid var(--rule); position: sticky; top: 0; z-index: 10; }
-  thead th { padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-light); cursor: pointer; user-select: none; white-space: nowrap; }
-  thead th:hover { color: var(--ink); }
-  tbody tr { border-bottom: 1px solid var(--rule); background: var(--white); transition: background 0.1s; cursor: pointer; }
-  tbody tr:hover { background: var(--accent-soft); }
-  td { padding: 12px 14px; vertical-align: middle; }
-  .td-app { font-weight: 500; color: var(--ink); }
-  .td-app .app-sub { font-weight: 300; font-size: 11px; color: var(--ink-light); margin-top: 1px; }
-  .td-ref { font-size: 11px; color: var(--ink-light); font-family: monospace; }
-  .td-date { font-size: 12px; color: var(--ink-mid); white-space: nowrap; }
+.toolbar { background: var(--white); border-bottom: 1px solid var(--rule); padding: 14px 32px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toolbar-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-right: 4px; }
+.toolbar-spacer { flex: 1; }
+.search-box { padding: 7px 12px 7px 32px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; width: 200px; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center; outline: none; }
+.search-box:focus { border-color: var(--ink); }
+.filter-select { padding: 7px 28px 7px 10px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink-mid); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E") no-repeat right 8px center; -webkit-appearance: none; cursor: pointer; outline: none; }
+.btn-toolbar { background: var(--ink); color: #fff; border: none; padding: 7px 14px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+.btn-toolbar:hover { background: #333; }
+.btn-toolbar.secondary { background: var(--white); color: var(--ink-mid); border: 1px solid var(--rule); }
+.btn-toolbar.secondary:hover { background: var(--accent); color: var(--ink); }
 
-  /* BADGES */
-  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-  .badge-new { background: var(--info-bg); color: var(--info); }
-  .badge-triage { background: var(--warn-bg); color: var(--warn); }
-  .badge-input { background: var(--purple-bg); color: var(--purple); }
-  .badge-decide { background: #fff3e0; color: #b35c00; }
-  .badge-approved { background: var(--success-bg); color: var(--success); }
-  .badge-denied { background: var(--danger-bg); color: var(--danger); }
-  .badge-closed { background: var(--accent-soft); color: var(--ink-light); }
-  .badge-type { background: var(--accent-soft); color: var(--ink-mid); }
+.stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--rule); border-bottom: 1px solid var(--rule); }
+.stat-cell { background: var(--white); padding: 14px 20px; }
+.stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 4px; }
+.stat-value { font-size: 22px; font-weight: 500; color: var(--ink); }
+.stat-sub { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
 
-  .risk-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
-  .risk-high { background: var(--danger); }
-  .risk-med { background: var(--warn); }
-  .risk-low { background: var(--success); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--white); border-bottom: 2px solid var(--rule); }
+thead th { padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-light); cursor: pointer; user-select: none; white-space: nowrap; }
+thead th:hover { color: var(--ink); }
+tbody tr { border-bottom: 1px solid var(--rule); background: var(--white); transition: background 0.1s; cursor: pointer; }
+tbody tr:hover { background: var(--accent); }
+td { padding: 12px 14px; vertical-align: middle; }
+.td-app { font-weight: 500; }
+.td-app .app-sub { font-weight: 300; font-size: 11px; color: var(--ink-light); margin-top: 1px; }
+.td-ref { font-size: 11px; color: var(--ink-light); font-family: monospace; }
+.td-date { font-size: 12px; color: var(--ink-mid); white-space: nowrap; }
 
-  /* EMPTY STATE */
-  .empty-state { text-align: center; padding: 80px 40px; color: var(--ink-light); }
-  .empty-state h3 { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 8px; }
-  .empty-state p { font-size: 13px; max-width: 320px; margin: 0 auto 24px; line-height: 1.6; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+.badge-new { background: var(--info-bg); color: var(--info); }
+.badge-triage { background: var(--warn-bg); color: var(--warn); }
+.badge-input { background: var(--purple-bg); color: var(--purple); }
+.badge-decide { background: #fff3e0; color: #b35c00; }
+.badge-approved { background: var(--success-bg); color: var(--success); }
+.badge-denied { background: var(--danger-bg); color: var(--danger); }
+.badge-closed { background: var(--accent); color: var(--ink-light); }
+.badge-type { background: var(--accent); color: var(--ink-mid); }
 
-  /* DETAIL PANEL */
-  .detail-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; }
-  .detail-overlay.open { display: block; }
-  .detail-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 520px; background: var(--white); border-left: 1px solid var(--rule); overflow-y: auto; z-index: 101; transform: translateX(100%); transition: transform 0.25s ease; }
-  .detail-panel.open { transform: translateX(0); }
-  .detail-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--rule); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; position: sticky; top: 0; background: var(--white); z-index: 1; }
-  .detail-header h2 { font-family: 'DM Serif Display', serif; font-size: 20px; line-height: 1.2; }
-  .detail-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ink-light); padding: 0 4px; line-height: 1; }
-  .detail-close:hover { color: var(--ink); }
-  .detail-body { padding: 20px 24px 40px; }
-  .detail-section { margin-bottom: 24px; }
-  .detail-section-title { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 12px; }
-  .detail-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-key { color: var(--ink-light); min-width: 130px; flex-shrink: 0; }
-  .detail-val { color: var(--ink); }
-  .detail-text { font-size: 13px; color: var(--ink-mid); line-height: 1.65; background: var(--surface); border-radius: var(--radius); padding: 12px 14px; white-space: pre-wrap; }
+.empty-state { text-align: center; padding: 80px 40px; }
+.empty-state h3 { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+.empty-state p { font-size: 13px; color: var(--ink-light); max-width: 320px; margin: 0 auto 24px; line-height: 1.6; }
 
-  /* STAGE STEPPER */
-  .stage-stepper { display: flex; gap: 0; margin: 16px 0; }
-  .stage-step { flex: 1; padding: 8px 6px; text-align: center; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--rule); border-right: none; color: var(--ink-light); transition: all 0.15s; cursor: pointer; }
-  .stage-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-  .stage-step:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-right: 1px solid var(--rule); }
-  .stage-step:hover { background: var(--accent-soft); color: var(--ink); }
-  .stage-step.current { background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .stage-step.past { background: var(--accent-soft); color: var(--ink-mid); }
+.detail-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; }
+.detail-overlay.open { display: block; }
+.detail-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 500px; background: var(--white); border-left: 1px solid var(--rule); overflow-y: auto; z-index: 101; transform: translateX(100%); transition: transform 0.25s ease; }
+.detail-panel.open { transform: translateX(0); }
+.detail-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--rule); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; position: sticky; top: 0; background: var(--white); z-index: 1; }
+.detail-header h2 { font-family: 'DM Serif Display', serif; font-size: 20px; line-height: 1.2; }
+.detail-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--ink-light); padding: 0; line-height: 1; }
+.detail-close:hover { color: var(--ink); }
+.detail-body { padding: 20px 24px 40px; }
+.detail-section { margin-bottom: 24px; }
+.detail-section-title { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 10px; }
+.detail-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+.detail-row:last-child { border-bottom: none; }
+.detail-key { color: var(--ink-light); min-width: 120px; flex-shrink: 0; }
+.detail-val { color: var(--ink); }
+.detail-text { font-size: 13px; color: var(--ink-mid); line-height: 1.65; background: var(--surface); border-radius: var(--radius); padding: 12px 14px; white-space: pre-wrap; }
 
-  /* NOTES */
-  .notes-area { width: 100%; border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; resize: vertical; min-height: 80px; outline: none; margin-top: 8px; }
-  .notes-area:focus { border-color: var(--ink); }
-  .btn-save { background: var(--ink); color: var(--white); border: none; padding: 7px 16px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; margin-top: 8px; }
-  .btn-save:hover { background: #333; }
+.stage-stepper { display: flex; margin: 12px 0; }
+.stage-step { flex: 1; padding: 7px 4px; text-align: center; font-size: 10px; font-weight: 500; background: var(--surface); border: 1px solid var(--rule); border-right: none; color: var(--ink-light); cursor: pointer; transition: all 0.15s; }
+.stage-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.stage-step:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-right: 1px solid var(--rule); }
+.stage-step:hover { background: var(--accent); color: var(--ink); }
+.stage-step.current { background: var(--ink); color: #fff; border-color: var(--ink); }
+.stage-step.past { background: var(--accent); color: var(--ink-mid); }
 
-  /* RAPID MINI */
-  .rapid-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .rapid-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 99px; font-size: 11px; }
-  .rapid-chip-letter { font-weight: 500; color: var(--ink); }
-  .rapid-chip-name { color: var(--ink-light); }
+.notes-area { width: 100%; border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; resize: vertical; min-height: 80px; outline: none; margin-top: 8px; }
+.notes-area:focus { border-color: var(--ink); }
+.btn-save { background: var(--ink); color: #fff; border: none; padding: 7px 16px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; margin-top: 8px; }
+.btn-save:hover { background: #333; }
 
-  @media (max-width: 900px) {
-    .stats-row { grid-template-columns: repeat(3, 1fr); }
-    .detail-panel { width: 100%; }
-  }
+.rapid-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.rapid-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 99px; font-size: 11px; }
+.rapid-chip-letter { font-weight: 500; color: var(--ink); }
+.rapid-chip-name { color: var(--ink-light); }
+
+@media (max-width: 900px) {
+  .stats-row { grid-template-columns: repeat(3,1fr); }
+  .detail-panel { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -136,50 +129,41 @@
   </nav>
 </header>
 
+<div class="loading-bar" id="loading-bar"></div>
+<div class="error-bar" id="error-bar">⚠ Could not connect to Google Sheets. Check your Apps Script URL is correct and deployed with access set to "Anyone". <a href="egf-setup-guide.html" style="color:var(--danger);font-weight:500;">Setup guide →</a></div>
+
 <div class="toolbar">
   <span class="toolbar-title">Submissions</span>
-  <input class="search-box" type="text" id="search" placeholder="Search app, submitter, ref…" oninput="renderTable()" />
+  <input class="search-box" type="text" id="search" placeholder="Search app, ref, submitter…" oninput="renderTable()" />
   <select class="filter-select" id="filter-status" onchange="renderTable()">
     <option value="">All statuses</option>
-    <option value="New">New</option>
-    <option value="Triage">Triage</option>
-    <option value="Gathering input">Gathering input</option>
-    <option value="Decision pending">Decision pending</option>
-    <option value="Approved">Approved</option>
-    <option value="Denied">Denied</option>
-    <option value="Closed">Closed</option>
+    <option>New</option><option>Triage</option><option>Gathering input</option>
+    <option>Decision pending</option><option>Approved</option><option>Denied</option><option>Closed</option>
   </select>
   <select class="filter-select" id="filter-type" onchange="renderTable()">
     <option value="">All types</option>
-    <option value="api_access">API access</option>
-    <option value="sentinel">Sentinel pricing</option>
-    <option value="managed_risk">Managed risk</option>
-    <option value="other">Other</option>
+    <option value="api_access">API access</option><option value="sentinel">Sentinel pricing</option>
+    <option value="managed_risk">Managed risk</option><option value="other">Other</option>
   </select>
   <select class="filter-select" id="filter-urgency" onchange="renderTable()">
     <option value="">All urgency</option>
-    <option value="Urgent">Urgent</option>
-    <option value="Elevated">Elevated</option>
-    <option value="Routine">Routine</option>
+    <option value="Urgent">Urgent</option><option value="Elevated">Elevated</option><option value="Routine">Routine</option>
   </select>
   <div class="toolbar-spacer"></div>
-  <button class="btn-add" onclick="load()">↻ Refresh</button>
-  <a href="egf-submission-form.html" class="btn-add">+ New submission</a>
+  <button class="btn-toolbar secondary" onclick="loadSubmissions()">↻ Refresh</button>
+  <a href="egf-submission-form.html" class="btn-toolbar">+ New submission</a>
 </div>
-<div id="loading-bar" style="display:none;height:3px;background:linear-gradient(90deg,#1a1a1a 0%,#888 50%,#1a1a1a 100%);background-size:200% 100%;animation:shimmer 1.2s infinite;"></div>
-<div id="load-error" style="display:none;padding:10px 32px;background:#fdf0ee;color:#c42b1a;font-size:13px;border-bottom:1px solid #f5c6c2;">⚠ Could not connect to Google Sheets. Check that your Apps Script URL is correct and the script is deployed as a web app with access set to "Anyone".</div>
-<style>@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}</style>
 
 <div class="stats-row">
-  <div class="stat-cell"><div class="stat-label">Total submissions</div><div class="stat-value" id="stat-total">0</div></div>
-  <div class="stat-cell"><div class="stat-label">Awaiting triage</div><div class="stat-value" id="stat-new">0</div><div class="stat-sub">New + Triage</div></div>
-  <div class="stat-cell"><div class="stat-label">In progress</div><div class="stat-value" id="stat-inprog">0</div><div class="stat-sub">Input + Decision pending</div></div>
-  <div class="stat-cell"><div class="stat-label">Decided</div><div class="stat-value" id="stat-decided">0</div><div class="stat-sub">Approved + Denied</div></div>
-  <div class="stat-cell"><div class="stat-label">Urgent</div><div class="stat-value" id="stat-urgent">0</div><div class="stat-sub">Requires out-of-cycle</div></div>
+  <div class="stat-cell"><div class="stat-label">Total</div><div class="stat-value" id="stat-total">—</div></div>
+  <div class="stat-cell"><div class="stat-label">Awaiting triage</div><div class="stat-value" id="stat-new">—</div><div class="stat-sub">New + Triage</div></div>
+  <div class="stat-cell"><div class="stat-label">In progress</div><div class="stat-value" id="stat-inprog">—</div><div class="stat-sub">Input + Decision</div></div>
+  <div class="stat-cell"><div class="stat-label">Decided</div><div class="stat-value" id="stat-decided">—</div><div class="stat-sub">Approved + Denied</div></div>
+  <div class="stat-cell"><div class="stat-label">Urgent</div><div class="stat-value" id="stat-urgent">—</div></div>
 </div>
 
 <div class="table-wrap">
-  <table id="main-table">
+  <table id="main-table" style="display:none;">
     <thead>
       <tr>
         <th onclick="sortBy('ref')">Ref</th>
@@ -189,34 +173,29 @@
         <th onclick="sortBy('urgency')">Urgency</th>
         <th onclick="sortBy('connections')">Connections</th>
         <th onclick="sortBy('submittedAt')">Submitted</th>
-        <th onclick="sortBy('targetDate')">Target decision</th>
+        <th onclick="sortBy('targetDate')">Target</th>
         <th>Submitter</th>
       </tr>
     </thead>
     <tbody id="table-body"></tbody>
   </table>
-  <div class="empty-state" id="empty-state" style="display:none;">
+  <div class="empty-state" id="empty-state">
     <h3>No submissions yet</h3>
-    <p>Submissions from the EGF form will appear here automatically. You can also add a demo entry to see how it looks.</p>
-    <button class="btn-add" onclick="addDemo()">Add demo entry</button>
+    <p>Submissions from the form will appear here. Make sure your Apps Script URL is configured in both files.</p>
+    <a href="egf-setup-guide.html" class="btn-toolbar">View setup guide →</a>
   </div>
 </div>
 
-<!-- DETAIL PANEL -->
 <div class="detail-overlay" id="overlay" onclick="closeDetail()"></div>
 <div class="detail-panel" id="detail-panel">
   <div class="detail-header">
-    <div>
-      <div style="font-size:11px;color:var(--ink-ghost);margin-bottom:4px;" id="d-ref"></div>
-      <h2 id="d-app-name"></h2>
-    </div>
+    <div><div style="font-size:11px;color:var(--ink-ghost);margin-bottom:3px;" id="d-ref"></div><h2 id="d-app-name"></h2></div>
     <button class="detail-close" onclick="closeDetail()">×</button>
   </div>
   <div class="detail-body">
-
     <div class="detail-section">
       <div class="detail-section-title">Stage</div>
-      <div class="stage-stepper" id="d-stepper">
+      <div class="stage-stepper">
         <div class="stage-step" onclick="setStage(this,'New')">New</div>
         <div class="stage-step" onclick="setStage(this,'Triage')">Triage</div>
         <div class="stage-step" onclick="setStage(this,'Gathering input')">Input</div>
@@ -225,52 +204,25 @@
         <div class="stage-step" onclick="setStage(this,'Denied')">Denied</div>
       </div>
     </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">App details</div>
-      <div id="d-app-meta"></div>
-    </div>
-
-    <div class="detail-section" id="d-problem-section">
-      <div class="detail-section-title">Problem summary</div>
-      <div class="detail-text" id="d-problem"></div>
-    </div>
-
-    <div class="detail-section" id="d-rec-section">
-      <div class="detail-section-title">Recommendation</div>
-      <div class="detail-text" id="d-recommendation"></div>
-    </div>
-
-    <div class="detail-section" id="d-risks-section">
-      <div class="detail-section-title">Key risks</div>
-      <div class="detail-text" id="d-risks"></div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">RAPID pathway</div>
-      <div class="rapid-chips" id="d-rapid"></div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">Commercial</div>
-      <div id="d-commercial"></div>
-    </div>
-
+    <div class="detail-section"><div class="detail-section-title">App details</div><div id="d-meta"></div></div>
+    <div class="detail-section"><div class="detail-section-title">Problem summary</div><div class="detail-text" id="d-problem"></div></div>
+    <div class="detail-section"><div class="detail-section-title">Recommendation</div><div class="detail-text" id="d-recommendation"></div></div>
+    <div class="detail-section"><div class="detail-section-title">Key risks</div><div class="detail-text" id="d-risks"></div></div>
+    <div class="detail-section"><div class="detail-section-title">RAPID pathway</div><div class="rapid-chips" id="d-rapid"></div></div>
+    <div class="detail-section"><div class="detail-section-title">Commercial</div><div id="d-commercial"></div></div>
     <div class="detail-section">
       <div class="detail-section-title">Governance notes</div>
-      <textarea class="notes-area" id="d-notes" placeholder="Add internal notes, actions, or decisions here…"></textarea>
+      <textarea class="notes-area" id="d-notes" placeholder="Add internal notes, actions, decisions…"></textarea>
       <button class="btn-save" onclick="saveNotes()">Save notes</button>
     </div>
-
-    <div style="margin-top:8px;">
-      <button onclick="deleteEntry()" style="background:none;border:none;color:var(--danger);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;">Delete this submission</button>
-    </div>
+    <button onclick="deleteEntry()" style="background:none;border:none;color:var(--danger);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;">Delete this submission</button>
   </div>
 </div>
 
 <script>
-// ── PASTE YOUR APPS SCRIPT URL HERE after setup ──
+// ── CONFIG ───────────────────────────────────────────────────────
 const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ─────────────────────────────────────────────────────────────────
 
 const RAPID_PATHS = {
   api_access: [['R','Sr. Developer Engagement Manager'],['A','Head of Ecosystem Governance'],['P','API Platform Eng · Partnerships'],['I','Ecosystem · Finance · Legal'],['D','CPO/XLT or GM-VP Ecosystem']],
@@ -278,46 +230,62 @@ const RAPID_PATHS = {
   managed_risk:[['R','Sr. Developer Engagement Manager'],['A','Head of Ecosystem Governance'],['P','API Platform Eng · Partnerships'],['I','Ecosystem · Finance · Legal'],['D','CPO or XLT']],
   other:      [['R','Sr. Developer Engagement Manager'],['A','Regional MDs · Product GMs'],['P','API Platform Eng · Ecosystem'],['I','Ecosystem · Finance · Legal'],['D','GM / VP Ecosystem']]
 };
-const TYPE_LABELS = {api_access:'API Access',sentinel:'Sentinel Pricing',managed_risk:'Managed Risk',other:'Other'};
+const TYPE_LABELS = { api_access:'API Access', sentinel:'Sentinel Pricing', managed_risk:'Managed Risk', other:'Other' };
 const STAGE_ORDER = ['New','Triage','Gathering input','Decision pending','Approved','Denied','Closed'];
 
 let submissions = [];
 let activeId = null;
 let sortKey = 'submittedAt';
-let sortDir = -1;
+let sortDirs = {};
 
-function load() {
-  try { submissions = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { submissions = []; }
-}
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(submissions));
+function showLoading(on) { document.getElementById('loading-bar').classList.toggle('show', on); }
+
+async function loadSubmissions() {
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    document.getElementById('error-bar').classList.add('show');
+    document.getElementById('error-bar').textContent = '⚠ Apps Script URL not configured. See setup guide to get started.';
+    return;
+  }
+  showLoading(true);
+  document.getElementById('error-bar').classList.remove('show');
+  try {
+    const res = await fetch(`${SCRIPT_URL}?action=getAll`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    submissions = (data.submissions || []).map(s => ({
+      id: s['Ref'], ref: s['Ref'], type: s['Review Type'], status: s['Status'] || 'New',
+      appName: s['App Name'], appId: s['App ID'], segment: s['Segment'], markets: s['Markets'],
+      jtbd: s['JTBD'], connections: s['Connections'], abCount: s['Active ABs'],
+      partnerSince: s['Partner Since'], sentinelTier: s['Sentinel Tier'],
+      problem: s['Problem Summary'], risks: s['Key Risks'], mitigants: s['Mitigants'],
+      recommendation: s['Recommendation'], revRisk: s['ARR at Risk'],
+      partnerBilled: s['Partner Billed %'], orgs12m: s['Orgs 12m'], orgs3m: s['Orgs 3m'],
+      commercialTerms: s['Commercial Terms'], urgency: s['Urgency'],
+      targetDate: s['Target Date'], submitterName: s['Submitter Name'],
+      submitterEmail: s['Submitter Email'], submittedAt: s['Submitted At'], notes: s['Notes'] || ''
+    }));
+  } catch(err) {
+    document.getElementById('error-bar').classList.add('show');
+  }
+  showLoading(false);
+  renderTable();
 }
 
-function formatDate(iso) {
-  if (!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+async function patchSheet(action, ref, data) {
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  try { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action, ref, ...data }) }); } catch(e) {}
 }
 
-function urgencyOrder(u) {
-  if (!u) return 3;
-  if (u.includes('Urgent')) return 0;
-  if (u.includes('Elevated')) return 1;
-  return 2;
+function fmtDate(v) {
+  if (!v) return '—';
+  try { return new Date(v).toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' }); } catch(e) { return v; }
 }
 
 function statusBadge(s) {
-  const map = {
-    'New':'badge-new','Triage':'badge-triage','Gathering input':'badge-input',
-    'Decision pending':'badge-decide','Approved':'badge-approved','Denied':'badge-denied','Closed':'badge-closed'
-  };
-  return `<span class="badge ${map[s]||'badge-type'}">${s||'—'}</span>`;
+  const m = { 'New':'badge-new','Triage':'badge-triage','Gathering input':'badge-input','Decision pending':'badge-decide','Approved':'badge-approved','Denied':'badge-denied','Closed':'badge-closed' };
+  return `<span class="badge ${m[s]||'badge-type'}">${s||'—'}</span>`;
 }
-
-function typeBadge(t) {
-  return `<span class="badge badge-type">${TYPE_LABELS[t]||t||'—'}</span>`;
-}
-
+function typeBadge(t) { return `<span class="badge badge-type">${TYPE_LABELS[t]||t||'—'}</span>`; }
 function urgencyBadge(u) {
   if (!u) return '—';
   if (u.includes('Urgent')) return `<span class="badge badge-denied">Urgent</span>`;
@@ -327,10 +295,10 @@ function urgencyBadge(u) {
 
 function renderStats() {
   document.getElementById('stat-total').textContent = submissions.length;
-  document.getElementById('stat-new').textContent = submissions.filter(s => s.status === 'New' || s.status === 'Triage').length;
-  document.getElementById('stat-inprog').textContent = submissions.filter(s => s.status === 'Gathering input' || s.status === 'Decision pending').length;
-  document.getElementById('stat-decided').textContent = submissions.filter(s => s.status === 'Approved' || s.status === 'Denied').length;
-  document.getElementById('stat-urgent').textContent = submissions.filter(s => s.urgency && s.urgency.includes('Urgent')).length;
+  document.getElementById('stat-new').textContent = submissions.filter(s => s.status==='New'||s.status==='Triage').length;
+  document.getElementById('stat-inprog').textContent = submissions.filter(s => s.status==='Gathering input'||s.status==='Decision pending').length;
+  document.getElementById('stat-decided').textContent = submissions.filter(s => s.status==='Approved'||s.status==='Denied').length;
+  document.getElementById('stat-urgent').textContent = submissions.filter(s => (s.urgency||'').includes('Urgent')).length;
 }
 
 function renderTable() {
@@ -348,23 +316,25 @@ function renderTable() {
   });
 
   filtered.sort((a, b) => {
+    const dir = sortDirs[sortKey] || -1;
     let av = a[sortKey]||'', bv = b[sortKey]||'';
     if (sortKey === 'connections') { av = parseInt(av)||0; bv = parseInt(bv)||0; }
-    if (sortKey === 'urgency') { av = urgencyOrder(av); bv = urgencyOrder(bv); return av - bv; }
-    if (av < bv) return -1 * sortDir;
-    if (av > bv) return 1 * sortDir;
+    if (av < bv) return -1 * dir;
+    if (av > bv) return dir;
     return 0;
   });
 
   const tbody = document.getElementById('table-body');
   tbody.innerHTML = '';
+  const table = document.getElementById('main-table');
+  const empty = document.getElementById('empty-state');
 
   if (filtered.length === 0) {
-    document.getElementById('empty-state').style.display = 'block';
-    document.getElementById('main-table').style.display = submissions.length === 0 ? 'none' : 'table';
+    table.style.display = 'none';
+    empty.style.display = 'block';
   } else {
-    document.getElementById('empty-state').style.display = 'none';
-    document.getElementById('main-table').style.display = 'table';
+    table.style.display = 'table';
+    empty.style.display = 'none';
     filtered.forEach(s => {
       const tr = document.createElement('tr');
       tr.onclick = () => openDetail(s.id);
@@ -375,21 +345,18 @@ function renderTable() {
         <td>${statusBadge(s.status||'New')}</td>
         <td>${urgencyBadge(s.urgency)}</td>
         <td>${s.connections ? Number(s.connections).toLocaleString() : '—'}</td>
-        <td class="td-date">${formatDate(s.submittedAt)}</td>
-        <td class="td-date">${formatDate(s.targetDate)||'—'}</td>
-        <td class="td-date">${s.submitterName||'—'}</td>
-      `;
+        <td class="td-date">${fmtDate(s.submittedAt)}</td>
+        <td class="td-date">${fmtDate(s.targetDate)}</td>
+        <td class="td-date">${s.submitterName||'—'}</td>`;
       tbody.appendChild(tr);
     });
   }
   renderStats();
 }
 
-let sortDirs = {};
 function sortBy(key) {
-  sortDirs[key] = (sortDirs[key] || 1) * -1;
+  sortDirs[key] = (sortDirs[key]||1) * -1;
   sortKey = key;
-  sortDir = sortDirs[key];
   renderTable();
 }
 
@@ -397,57 +364,35 @@ function openDetail(id) {
   const s = submissions.find(x => x.id === id);
   if (!s) return;
   activeId = id;
+  document.getElementById('d-ref').textContent = s.ref||'';
+  document.getElementById('d-app-name').textContent = s.appName||'—';
+  document.getElementById('d-problem').textContent = s.problem||'—';
+  document.getElementById('d-recommendation').textContent = s.recommendation||'—';
+  document.getElementById('d-risks').textContent = s.risks||'—';
+  document.getElementById('d-notes').value = s.notes||'';
 
-  document.getElementById('d-ref').textContent = s.ref || '';
-  document.getElementById('d-app-name').textContent = s.appName || '—';
-  document.getElementById('d-problem').textContent = s.problem || '—';
-  document.getElementById('d-recommendation').textContent = s.recommendation || '—';
-  document.getElementById('d-risks').textContent = s.risks || '—';
-  document.getElementById('d-notes').value = s.notes || '';
+  document.getElementById('d-meta').innerHTML = [
+    ['App ID', s.appId||'—'], ['Segment', s.segment||'—'], ['Markets', s.markets||'—'],
+    ['JTBD', s.jtbd||'—'], ['Connections', s.connections ? Number(s.connections).toLocaleString() : '—'],
+    ['Active ABs', s.abCount||'—'], ['Partner since', s.partnerSince||'—'],
+    ['Sentinel tier', s.sentinelTier||'—'], ['ARR at risk', s.revRisk||'—'],
+    ['Submitted', fmtDate(s.submittedAt)], ['Target', fmtDate(s.targetDate)],
+    ['Submitter', `${s.submitterName||'—'} · ${s.submitterEmail||'—'}`],
+    ['Urgency', s.urgency||'—']
+  ].map(r => `<div class="detail-row"><div class="detail-key">${r[0]}</div><div class="detail-val">${r[1]}</div></div>`).join('');
 
-  const metaRows = [
-    ['App ID', s.appId||'—'],
-    ['Segment', s.segment||'—'],
-    ['Markets', s.markets||'—'],
-    ['JTBD', s.jtbd||'—'],
-    ['Connections', s.connections ? Number(s.connections).toLocaleString() : '—'],
-    ['Active ABs', s.abCount||'—'],
-    ['Partner since', s.partnerSince||'—'],
-    ['Sentinel tier', s.sentinelTier||'—'],
-    ['ARR at risk', s.revRisk||'—'],
-    ['Commercial terms', s.commercialTerms||'—'],
-    ['Submitter', `${s.submitterName||'—'} (${s.submitterEmail||'—'})`],
-    ['Submitted', formatDate(s.submittedAt)],
-    ['Target decision', formatDate(s.targetDate)||'—'],
-    ['Urgency', s.urgency||'—'],
-  ];
-  document.getElementById('d-app-meta').innerHTML = metaRows.map(r =>
-    `<div class="detail-row"><div class="detail-key">${r[0]}</div><div class="detail-val">${r[1]}</div></div>`
-  ).join('');
+  document.getElementById('d-rapid').innerHTML = (RAPID_PATHS[s.type]||RAPID_PATHS.other)
+    .map(r => `<div class="rapid-chip"><span class="rapid-chip-letter">${r[0]}</span><span class="rapid-chip-name">${r[1]}</span></div>`).join('');
 
-  const rapid = RAPID_PATHS[s.type] || RAPID_PATHS['other'];
-  document.getElementById('d-rapid').innerHTML = rapid.map(r =>
-    `<div class="rapid-chip"><span class="rapid-chip-letter">${r[0]}</span><span class="rapid-chip-name">${r[1]}</span></div>`
-  ).join('');
-
-  const commRows = [
-    ['Rev at risk', s.revRisk||'—'],
-    ['Partner-billed', s.partnerBilled||'—'],
-    ['Orgs (12m)', s.orgs12m||'—'],
-    ['Orgs (3m)', s.orgs3m||'—'],
-    ['Proposed terms', s.commercialTerms||'—'],
-  ];
-  document.getElementById('d-commercial').innerHTML = commRows.map(r =>
-    `<div class="detail-row"><div class="detail-key">${r[0]}</div><div class="detail-val">${r[1]}</div></div>`
-  ).join('');
+  document.getElementById('d-commercial').innerHTML = [
+    ['ARR at risk', s.revRisk||'—'], ['Partner-billed', s.partnerBilled||'—'],
+    ['Orgs 12m', s.orgs12m||'—'], ['Orgs 3m', s.orgs3m||'—'],
+    ['Commercial terms', s.commercialTerms||'—']
+  ].map(r => `<div class="detail-row"><div class="detail-key">${r[0]}</div><div class="detail-val">${r[1]}</div></div>`).join('');
 
   const steps = document.querySelectorAll('.stage-step');
-  const currentIdx = STAGE_ORDER.indexOf(s.status || 'New');
-  steps.forEach((step, i) => {
-    step.classList.remove('current','past');
-    if (i === currentIdx) step.classList.add('current');
-    else if (i < currentIdx) step.classList.add('past');
-  });
+  const idx = STAGE_ORDER.indexOf(s.status||'New');
+  steps.forEach((step, i) => { step.classList.remove('current','past'); if (i===idx) step.classList.add('current'); else if (i<idx) step.classList.add('past'); });
 
   document.getElementById('overlay').classList.add('open');
   document.getElementById('detail-panel').classList.add('open');
@@ -464,15 +409,10 @@ function setStage(el, stage) {
   const s = submissions.find(x => x.id === activeId);
   if (!s) return;
   s.status = stage;
-  saveStatus(s.ref, stage);
-
+  patchSheet('updateStatus', s.ref, { status: stage });
   const steps = document.querySelectorAll('.stage-step');
   const idx = STAGE_ORDER.indexOf(stage);
-  steps.forEach((step, i) => {
-    step.classList.remove('current','past');
-    if (i === idx) step.classList.add('current');
-    else if (i < idx) step.classList.add('past');
-  });
+  steps.forEach((step, i) => { step.classList.remove('current','past'); if (i===idx) step.classList.add('current'); else if (i<idx) step.classList.add('past'); });
   renderTable();
 }
 
@@ -481,7 +421,7 @@ function saveNotes() {
   const s = submissions.find(x => x.id === activeId);
   if (!s) return;
   s.notes = document.getElementById('d-notes').value;
-  saveNoteToSheet(s.ref, s.notes);
+  patchSheet('updateNotes', s.ref, { notes: s.notes });
   const btn = document.querySelector('.btn-save');
   btn.textContent = 'Saved ✓';
   setTimeout(() => btn.textContent = 'Save notes', 1500);
@@ -491,45 +431,13 @@ function deleteEntry() {
   if (!activeId) return;
   if (!confirm('Delete this submission? This cannot be undone.')) return;
   const s = submissions.find(x => x.id === activeId);
-  if (s) deleteFromSheet(s.ref);
+  if (s) patchSheet('delete', s.ref, {});
   submissions = submissions.filter(x => x.id !== activeId);
   closeDetail();
   renderTable();
 }
 
-function addDemoData() {
-  const demos = [
-    {
-      id: 'demo-1', ref: 'EGF-2026-1042', type: 'api_access', appName: 'Business Fitness',
-      appId: 'bf-active-001', segment: 'AB only', markets: 'AU, NZ, UK', jtbd: 'Workpapers / Ledger & Reporting',
-      connections: '140916', abCount: '445', partnerSince: '2017', sentinelTier: 'Enterprise 2',
-      problem: 'Business Fitness was certified as a workpapers app in 2017 and has since expanded to include Active Ledger & Reporting (released 2022) without re-certification. They now compete directly with Xero\'s core ledger in AU, NZ, and UK. Estimated 6.5k PE ledger churns since ledger launch.',
-      risks: '• PE ledger migration risk (38k orgs, $3.1M ARR)\n• Developer Terms breach — uncertified use case\n• Reputational risk given prior open stance\n• AB NPS impact (NPS already low)',
-      recommendation: '• Grandfather API access at AB level for Active Workpapers only\n• Terminate API access for Active Ledger & Reporting\n• Restrict new ABs to Trial Balance only\n• Apply Project Sentinel Enterprise 2 pricing (~$5,126/month)',
-      revRisk: '$31.7M AUD (445 ABs, ~$42 ARPU)', partnerBilled: '70%', orgs12m: '140916', orgs3m: '4200',
-      commercialTerms: 'Project Sentinel + overages', urgency: 'Elevated — within 2 weeks',
-      status: 'Decision pending', submitterName: 'Josie Attard', submitterEmail: 'josie.attard@xero.com',
-      submittedAt: '2025-12-11', targetDate: '2026-01-15', notes: 'ANZ LT aligned Dec 2025. Awaiting final CPO sign-off. Legal reviewed — no anti-competitive concerns flagged.'
-    },
-    {
-      id: 'demo-2', ref: 'EGF-2026-1078', type: 'api_access', appName: 'Prosaic',
-      appId: 'a7352e2a-8d4d-4bbf-8762-deb2dd5a0f4c', segment: 'SMB + AB', markets: 'NZ', jtbd: 'Ledger / Open banking',
-      connections: '81', abCount: '2', partnerSince: '~2 years', sentinelTier: 'Advanced (Journals)',
-      problem: 'Prosaic originally approved as an expense management app. Has since evolved to a full ledger solution using open banking for bank feeds — substantially similar to Xero\'s core offering. NZ LT assess as high threat. Only 27 of 86 connections active in past 3 months.',
-      risks: '• Breach of Developer Terms (ledger use case not approved)\n• Actively pitching as Xero alternative per customer feedback\n• Potential customer migration via AB relationships',
-      recommendation: '• Withdraw API access — grandfather existing 88 connections\n• Remove from XAS\n• Communicate to partner citing Developer Terms breach',
-      revRisk: 'Low — minimal active usage', partnerBilled: 'Unknown', orgs12m: '86', orgs3m: '27',
-      commercialTerms: 'No commercial terms required', urgency: 'Routine — next forum session',
-      status: 'Approved', submitterName: 'Regan Ashworth', submitterEmail: 'regan.ashworth@xero.com',
-      submittedAt: '2026-03-01', targetDate: '2026-04-01', notes: 'Eco Gov sign-off 4 March 2026. Access removal in progress.'
-    }
-  ];
-  demos.forEach(d => { if (!submissions.find(s => s.id === d.id)) submissions.push(d); });
-}
-
-// ── INIT ──
-load();
+loadSubmissions();
 </script>
 </body>
 </html>
-

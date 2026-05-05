@@ -6,510 +6,223 @@
 <title>EGF — API Governance Submission</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1a1a; --ink-mid: #555; --ink-light: #888; --ink-ghost: #bbb;
+  --surface: #fafaf8; --white: #fff; --rule: #e8e6e1; --accent: #f0ede8;
+  --warn: #c45c1a; --warn-bg: #fef4ec;
+  --info: #1a5c8a; --info-bg: #ecf4fd;
+  --danger: #c42b1a;
+  --ai: #5b3fa8; --ai-bg: #f2effe; --ai-border: #c9b8f5;
+  --radius: 6px; --radius-lg: 10px;
+}
+html { font-size: 15px; }
+body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--surface); color: var(--ink); min-height: 100vh; line-height: 1.65; }
 
-  :root {
-    --ink: #1a1a1a;
-    --ink-mid: #555;
-    --ink-light: #888;
-    --ink-ghost: #bbb;
-    --surface: #fafaf8;
-    --white: #ffffff;
-    --rule: #e8e6e1;
-    --accent: #1a1a1a;
-    --accent-soft: #f0ede8;
-    --warn: #c45c1a;
-    --warn-bg: #fef4ec;
-    --info: #1a5c8a;
-    --info-bg: #ecf4fd;
-    --success: #1a6b3a;
-    --success-bg: #ecfdf4;
-    --danger: #c42b1a;
-    --radius: 6px;
-    --radius-lg: 10px;
-  }
+/* HEADER */
+.site-header { background: var(--ink); color: #fff; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.brand { font-family: 'DM Serif Display', serif; font-size: 17px; }
+.brand span { opacity: 0.4; margin: 0 6px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-link { color: rgba(255,255,255,0.45); font-size: 12px; text-decoration: none; }
+.header-link:hover { color: white; }
 
-  html { font-size: 15px; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    background: var(--surface);
-    color: var(--ink);
-    min-height: 100vh;
-    line-height: 1.65;
-  }
+/* LAYOUT */
+.page-body { display: flex; min-height: calc(100vh - 52px); }
 
-  /* ── HEADER ── */
-  .site-header {
-    background: var(--ink);
-    color: var(--white);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 52px;
-  }
-  .site-header .brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px;
-    letter-spacing: 0.01em;
-  }
-  .site-header .brand span { opacity: 0.45; margin: 0 6px; }
-  .site-header .version { font-size: 11px; opacity: 0.4; letter-spacing: 0.08em; text-transform: uppercase; }
+.sidebar { width: 240px; flex-shrink: 0; background: var(--white); border-right: 1px solid var(--rule); padding: 36px 0; position: sticky; top: 0; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar-section { padding: 0 24px; margin-bottom: 28px; }
+.sidebar-label { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 10px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; color: var(--ink-light); cursor: pointer; background: none; border: none; width: 100%; text-align: left; transition: color 0.15s; }
+.nav-item:hover { color: var(--ink); }
+.nav-item.active { color: var(--ink); font-weight: 500; }
+.nav-item.done { color: var(--ink-ghost); }
+.step-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--rule); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; color: var(--ink-light); transition: all 0.2s; }
+.nav-item.active .step-dot { background: var(--ink); color: #fff; }
+.nav-item.done .step-dot { background: var(--ink-ghost); color: #fff; font-size: 0; }
+.nav-item.done .step-dot::after { content: '✓'; font-size: 9px; }
 
-  /* ── LAYOUT ── */
-  .page-body { display: flex; min-height: calc(100vh - 52px); }
+.rapid-row { display: flex; gap: 6px; padding: 4px 0; font-size: 11px; border-bottom: 1px solid var(--rule); }
+.rapid-row:last-child { border-bottom: none; }
+.rapid-letter { font-weight: 500; width: 14px; flex-shrink: 0; color: var(--ink); }
+.rapid-name { color: var(--ink-mid); line-height: 1.4; }
 
-  .sidebar {
-    width: 240px;
-    flex-shrink: 0;
-    background: var(--white);
-    border-right: 1px solid var(--rule);
-    padding: 36px 0;
-    position: sticky;
-    top: 0;
-    height: calc(100vh - 52px);
-    overflow-y: auto;
-  }
+.main-content { flex: 1; padding: 48px 56px 80px; max-width: 760px; }
 
-  .sidebar-section {
-    padding: 0 24px;
-    margin-bottom: 32px;
-  }
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-ghost);
-    margin-bottom: 12px;
-  }
+/* STEPS */
+.step-panel { display: none; animation: fadeUp 0.2s ease; }
+.step-panel.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.step-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 8px; }
+.step-heading { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.2; margin-bottom: 8px; }
+.step-subhead { font-size: 13px; color: var(--ink-mid); margin-bottom: 36px; max-width: 540px; }
 
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 7px 0;
-    font-size: 13px;
-    color: var(--ink-light);
-    cursor: pointer;
-    transition: color 0.15s;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-  }
-  .nav-item:hover { color: var(--ink); }
-  .nav-item.active { color: var(--ink); font-weight: 500; }
-  .nav-item.done { color: var(--ink-ghost); }
-  .nav-item.done .step-dot { background: var(--ink-ghost); }
+/* FIELDS */
+.field { margin-bottom: 22px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+label.field-label { display: block; font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+.field-hint { display: block; font-size: 11px; color: var(--ink-light); margin-bottom: 5px; line-height: 1.5; }
+.req { color: var(--danger); }
+input[type=text], input[type=email], input[type=number], input[type=date], select, textarea {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; color: var(--ink);
+  background: var(--white); transition: border-color 0.15s, box-shadow 0.15s; outline: none; -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(26,26,26,0.06); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
 
-  .step-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--rule);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 500;
-    flex-shrink: 0;
-    color: var(--ink-light);
-    transition: all 0.2s;
-  }
-  .nav-item.active .step-dot {
-    background: var(--ink);
-    color: var(--white);
-  }
-  .nav-item.done .step-dot::after { content: '✓'; font-size: 9px; }
-  .nav-item.done .step-dot { color: transparent; font-size: 0; }
+/* AI ASSIST FIELD WRAPPER */
+.ai-field { position: relative; }
+.ai-field textarea { padding-right: 12px; }
+.ai-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--ai-bg); color: var(--ai); border: 1px solid var(--ai-border);
+  border-radius: var(--radius); padding: 4px 10px; font-size: 11px; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 4px;
+  transition: all 0.15s; white-space: nowrap;
+}
+.ai-btn:hover { background: var(--ai); color: white; border-color: var(--ai); }
+.ai-btn.loading { opacity: 0.6; cursor: not-allowed; }
+.ai-btn svg { width: 12px; height: 12px; }
+.ai-suggestion {
+  margin-top: 8px; padding: 12px 14px; background: var(--ai-bg);
+  border: 1px solid var(--ai-border); border-radius: var(--radius);
+  font-size: 12.5px; color: var(--ink-mid); line-height: 1.65; display: none;
+}
+.ai-suggestion.show { display: block; }
+.ai-suggestion-actions { display: flex; gap: 8px; margin-top: 10px; }
+.ai-use-btn { background: var(--ai); color: white; border: none; padding: 5px 12px; border-radius: var(--radius); font-size: 11px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.ai-use-btn:hover { opacity: 0.85; }
+.ai-discard-btn { background: none; border: 1px solid var(--rule); color: var(--ink-light); padding: 5px 12px; border-radius: var(--radius); font-size: 11px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.ai-discard-btn:hover { color: var(--ink); border-color: #ccc; }
+.ai-suggestion-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ai); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
 
-  .rapid-mini {
-    margin-top: 4px;
-  }
-  .rapid-row {
-    display: flex;
-    gap: 6px;
-    padding: 4px 0;
-    font-size: 11px;
-    border-bottom: 1px solid var(--rule);
-    align-items: flex-start;
-  }
-  .rapid-row:last-child { border-bottom: none; }
-  .rapid-letter {
-    font-weight: 500;
-    width: 14px;
-    flex-shrink: 0;
-    color: var(--ink);
-  }
-  .rapid-name { color: var(--ink-mid); line-height: 1.4; }
+/* OPTION CARDS */
+.option-cards { display: flex; flex-direction: column; gap: 8px; }
+.option-card { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: var(--radius-lg); cursor: pointer; transition: all 0.15s; background: var(--white); }
+.option-card:hover { border-color: #ccc; }
+.option-card.selected { border-color: var(--ink); background: var(--accent); }
+.option-card input { margin-top: 2px; flex-shrink: 0; accent-color: var(--ink); }
+.option-card-title { font-size: 13px; font-weight: 500; color: var(--ink); }
+.option-card-desc { font-size: 12px; color: var(--ink-light); margin-top: 2px; line-height: 1.45; }
 
-  /* ── MAIN ── */
-  .main-content {
-    flex: 1;
-    padding: 48px 56px 80px;
-    max-width: 760px;
-  }
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.check-card { display: flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid var(--rule); border-radius: var(--radius); cursor: pointer; font-size: 12.5px; color: var(--ink-mid); background: var(--white); transition: all 0.12s; }
+.check-card:hover { border-color: #ccc; color: var(--ink); }
+.check-card input { accent-color: var(--ink); flex-shrink: 0; }
 
-  .step-panel { display: none; animation: fadeUp 0.25s ease; }
-  .step-panel.active { display: block; }
+/* ALERTS */
+.alert { padding: 11px 14px; border-radius: var(--radius); font-size: 12.5px; line-height: 1.5; margin-bottom: 20px; border-left: 3px solid; display: none; }
+.alert.show { display: block; }
+.alert-warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+.alert-info { background: var(--info-bg); color: var(--info); border-color: var(--info); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
+.section-title { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 14px; }
 
-  .step-eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-ghost);
-    margin-bottom: 8px;
-  }
-  .step-heading {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    line-height: 1.2;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-  .step-subhead {
-    font-size: 13px;
-    color: var(--ink-mid);
-    margin-bottom: 36px;
-    max-width: 540px;
-  }
+/* NAV */
+.form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: var(--radius); cursor: pointer; transition: all 0.15s; border: none; }
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover { background: #333; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--ink-mid); border: 1px solid var(--rule); }
+.btn-ghost:hover { background: var(--accent); color: var(--ink); }
+.step-counter { font-size: 12px; color: var(--ink-ghost); }
 
-  /* ── FIELDS ── */
-  .field { margin-bottom: 22px; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
-  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+/* RAPID TABLE */
+.rapid-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+.rapid-table td { padding: 9px 12px; border: 1px solid var(--rule); vertical-align: top; line-height: 1.5; }
+.rapid-table td:first-child { font-weight: 500; width: 28px; text-align: center; background: var(--accent); color: var(--ink); }
+.rapid-table td:nth-child(2) { color: var(--ink-mid); font-size: 12px; }
+.rapid-table td:nth-child(3) { color: var(--ink); }
 
-  label.field-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: 5px;
-    letter-spacing: 0.01em;
-  }
-  .field-hint {
-    display: block;
-    font-size: 11px;
-    color: var(--ink-light);
-    margin-bottom: 5px;
-    line-height: 1.5;
-  }
-  .req { color: var(--danger); }
+/* REVIEW */
+.review-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 24px; }
+.review-card-header { background: var(--accent); padding: 12px 18px; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mid); }
+.review-row { display: flex; gap: 12px; padding: 10px 18px; border-bottom: 1px solid var(--rule); font-size: 13px; }
+.review-row:last-child { border-bottom: none; }
+.review-key { color: var(--ink-light); min-width: 160px; flex-shrink: 0; }
+.review-val { color: var(--ink); }
 
-  input[type=text], input[type=email], input[type=number], input[type=date], select, textarea {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 300;
-    color: var(--ink);
-    background: var(--white);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-    -webkit-appearance: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
-  }
-  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
-  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+/* SUCCESS */
+.success-screen { display: none; text-align: center; padding: 80px 40px; }
+.success-screen.active { display: block; }
+.success-icon { width: 56px; height: 56px; background: var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 22px; color: #fff; }
+.success-heading { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 12px; }
+.success-sub { font-size: 14px; color: var(--ink-mid); max-width: 440px; margin: 0 auto 8px; }
 
-  /* ── RADIO / CHECKBOX CARDS ── */
-  .option-cards { display: flex; flex-direction: column; gap: 8px; }
-  .option-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--white);
-  }
-  .option-card:hover { border-color: #ccc; }
-  .option-card.selected { border-color: var(--ink); background: var(--accent-soft); }
-  .option-card input { margin-top: 2px; flex-shrink: 0; accent-color: var(--ink); }
-  .option-card-title { font-size: 13px; font-weight: 500; color: var(--ink); }
-  .option-card-desc { font-size: 12px; color: var(--ink-light); margin-top: 2px; line-height: 1.45; }
+/* AI CONFIG BANNER */
+.ai-config-banner { background: var(--ai-bg); border-bottom: 1px solid var(--ai-border); padding: 10px 40px; font-size: 12px; color: var(--ai); display: flex; align-items: center; gap: 8px; }
+.ai-config-banner.hidden { display: none; }
+.ai-config-banner a { color: var(--ai); font-weight: 500; }
 
-  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-  .check-card {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 11px;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 12.5px;
-    color: var(--ink-mid);
-    background: var(--white);
-    transition: all 0.12s;
-  }
-  .check-card:hover { border-color: #ccc; color: var(--ink); }
-  .check-card input { accent-color: var(--ink); flex-shrink: 0; }
-
-  /* ── ALERTS ── */
-  .alert {
-    padding: 11px 14px;
-    border-radius: var(--radius);
-    font-size: 12.5px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    display: none;
-  }
-  .alert.show { display: block; }
-  .alert-warn { background: var(--warn-bg); color: var(--warn); border-left: 3px solid var(--warn); }
-  .alert-info { background: var(--info-bg); color: var(--info); border-left: 3px solid var(--info); }
-  .alert-success { background: var(--success-bg); color: var(--success); border-left: 3px solid var(--success); }
-
-  /* ── DIVIDER ── */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--rule);
-    margin: 28px 0;
-  }
-  .section-title {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-ghost);
-    margin-bottom: 14px;
-  }
-
-  /* ── NAV BUTTONS ── */
-  .form-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule);
-  }
-  .btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 10px 22px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all 0.15s;
-    border: none;
-    letter-spacing: 0.01em;
-  }
-  .btn-primary {
-    background: var(--ink);
-    color: var(--white);
-  }
-  .btn-primary:hover { background: #333; }
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink-mid);
-    border: 1px solid var(--rule);
-  }
-  .btn-ghost:hover { background: var(--accent-soft); color: var(--ink); border-color: #ccc; }
-  .btn-submit {
-    background: var(--ink);
-    color: var(--white);
-    padding: 12px 28px;
-    font-size: 14px;
-  }
-  .btn-submit:hover { background: #333; }
-
-  .step-counter { font-size: 12px; color: var(--ink-ghost); }
-
-  /* ── RAPID TABLE ── */
-  .rapid-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12.5px;
-    margin-top: 16px;
-  }
-  .rapid-table td {
-    padding: 9px 12px;
-    border: 1px solid var(--rule);
-    vertical-align: top;
-    line-height: 1.5;
-  }
-  .rapid-table td:first-child {
-    font-weight: 500;
-    width: 28px;
-    text-align: center;
-    background: var(--accent-soft);
-    color: var(--ink);
-  }
-  .rapid-table td:nth-child(2) { color: var(--ink-mid); }
-  .rapid-table td:nth-child(3) { color: var(--ink); font-weight: 400; }
-
-  /* ── REVIEW SUMMARY ── */
-  .review-card {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  .review-card-header {
-    background: var(--accent-soft);
-    padding: 12px 18px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-mid);
-  }
-  .review-row {
-    display: flex;
-    gap: 12px;
-    padding: 10px 18px;
-    border-bottom: 1px solid var(--rule);
-    font-size: 13px;
-  }
-  .review-row:last-child { border-bottom: none; }
-  .review-key { color: var(--ink-light); min-width: 160px; flex-shrink: 0; }
-  .review-val { color: var(--ink); font-weight: 400; }
-
-  /* ── SUCCESS ── */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 80px 40px;
-  }
-  .success-screen.active { display: block; }
-  .success-icon {
-    width: 56px;
-    height: 56px;
-    background: var(--ink);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-    font-size: 22px;
-    color: var(--white);
-  }
-  .success-heading {
-    font-family: 'DM Serif Display', serif;
-    font-size: 26px;
-    margin-bottom: 12px;
-  }
-  .success-sub { font-size: 14px; color: var(--ink-mid); max-width: 440px; margin: 0 auto; }
-
-  /* ── REQUIRED BADGE ── */
-  .required-note {
-    font-size: 11px;
-    color: var(--ink-ghost);
-    margin-bottom: 32px;
-  }
-
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .main-content { padding: 32px 24px 60px; }
-    .field-row, .field-row-3 { grid-template-columns: 1fr; }
-    .check-grid { grid-template-columns: 1fr; }
-  }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main-content { padding: 32px 24px 60px; }
+  .field-row { grid-template-columns: 1fr; }
+  .check-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <header class="site-header">
   <div class="brand">Xero Ecosystem<span>·</span>Governance Forum</div>
-  <div class="version">API Submission Form · v1.0</div>
+  <div class="header-right">
+    <a href="egf-tracker.html" class="header-link">View tracker →</a>
+  </div>
 </header>
 
+<div class="ai-config-banner" id="ai-banner">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+  AI assist is not configured — submissions still work normally. <a href="egf-setup-guide.html#ai-setup">Add your API key →</a>
+</div>
+
 <div class="page-body">
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
+  <nav class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Submission steps</div>
-      <button class="nav-item active" id="nav-0" onclick="goTo(0)">
-        <div class="step-dot" id="dot-0">1</div> Review type
-      </button>
-      <button class="nav-item" id="nav-1" onclick="goTo(1)">
-        <div class="step-dot" id="dot-1">2</div> App details
-      </button>
-      <button class="nav-item" id="nav-2" onclick="goTo(2)">
-        <div class="step-dot" id="dot-2">3</div> Framework assessment
-      </button>
-      <button class="nav-item" id="nav-3" onclick="goTo(3)">
-        <div class="step-dot" id="dot-3">4</div> Problem & recommendation
-      </button>
-      <button class="nav-item" id="nav-4" onclick="goTo(4)">
-        <div class="step-dot" id="dot-4">5</div> Commercial impact
-      </button>
-      <button class="nav-item" id="nav-5" onclick="goTo(5)">
-        <div class="step-dot" id="dot-5">6</div> Review & submit
-      </button>
+      <div class="sidebar-label">Steps</div>
+      <button class="nav-item active" id="nav-0" onclick="goTo(0)"><div class="step-dot" id="dot-0">1</div> Review type</button>
+      <button class="nav-item" id="nav-1" onclick="goTo(1)"><div class="step-dot" id="dot-1">2</div> App details</button>
+      <button class="nav-item" id="nav-2" onclick="goTo(2)"><div class="step-dot" id="dot-2">3</div> Framework check</button>
+      <button class="nav-item" id="nav-3" onclick="goTo(3)"><div class="step-dot" id="dot-3">4</div> Problem & recommendation</button>
+      <button class="nav-item" id="nav-4" onclick="goTo(4)"><div class="step-dot" id="dot-4">5</div> Commercial impact</button>
+      <button class="nav-item" id="nav-5" onclick="goTo(5)"><div class="step-dot" id="dot-5">6</div> Review & submit</button>
     </div>
-
     <div class="sidebar-section" id="rapid-sidebar" style="display:none;">
       <div class="sidebar-label">RAPID pathway</div>
-      <div class="rapid-mini" id="rapid-mini-content"></div>
+      <div id="rapid-mini"></div>
     </div>
   </nav>
 
-  <!-- MAIN -->
   <main class="main-content">
 
-    <!-- ── STEP 0: Review type ── -->
+    <!-- STEP 0 -->
     <div class="step-panel active" id="panel-0">
       <div class="step-eyebrow">Step 1 of 6</div>
       <h1 class="step-heading">What type of review is this?</h1>
-      <p class="step-subhead">This determines the RAPID pathway, decision-maker, and required fields for your submission.</p>
-      <p class="required-note"><span class="req">*</span> Required fields</p>
-
-      <div class="field">
-        <label class="field-label">Review type <span class="req">*</span></label>
-        <div class="option-cards" id="review-type-cards">
-          <label class="option-card" id="card-api_access">
-            <input type="radio" name="review_type" value="api_access" onchange="onReviewType(this)" />
-            <div>
-              <div class="option-card-title">API access restriction / removal / approval</div>
-              <div class="option-card-desc">Restricting, removing, or approving an app's access to Xero APIs. Requires HOEG review. Decision-maker: CPO / XLT (>10k connections) or GM-VP Ecosystem.</div>
-            </div>
-          </label>
-          <label class="option-card" id="card-sentinel">
-            <input type="radio" name="review_type" value="sentinel" onchange="onReviewType(this)" />
-            <div>
-              <div class="option-card-title">Sentinel pricing exemption</div>
-              <div class="option-card-desc">Requesting a deviation from standard Project Sentinel pricing tiers for an app partner. Decision-maker: CPO or XLT.</div>
-            </div>
-          </label>
-          <label class="option-card" id="card-managed_risk">
-            <input type="radio" name="review_type" value="managed_risk" onchange="onReviewType(this)" />
-            <div>
-              <div class="option-card-title">Managed risk</div>
-              <div class="option-card-desc">Moving an app to a managed risk tier with ongoing monitoring obligations. Decision-maker: CPO or XLT.</div>
-            </div>
-          </label>
-          <label class="option-card" id="card-other">
-            <input type="radio" name="review_type" value="other" onchange="onReviewType(this)" />
-            <div>
-              <div class="option-card-title">All other decisions</div>
-              <div class="option-card-desc">Any other API governance decisions for lower-tier apps. Decision-maker: GM / VP Ecosystem.</div>
-            </div>
-          </label>
-        </div>
+      <p class="step-subhead">Determines the RAPID pathway and decision-maker for your submission.</p>
+      <div class="option-cards">
+        <label class="option-card" id="card-api_access">
+          <input type="radio" name="review_type" value="api_access" onchange="onReviewType(this)" />
+          <div><div class="option-card-title">API access restriction / removal / approval</div><div class="option-card-desc">Restricting, removing, or approving an app's access to Xero APIs. Decision: CPO/XLT (&gt;10k connections) or GM-VP Ecosystem.</div></div>
+        </label>
+        <label class="option-card" id="card-sentinel">
+          <input type="radio" name="review_type" value="sentinel" onchange="onReviewType(this)" />
+          <div><div class="option-card-title">Sentinel pricing exemption</div><div class="option-card-desc">Requesting a deviation from standard Project Sentinel pricing tiers. Decision: CPO or XLT.</div></div>
+        </label>
+        <label class="option-card" id="card-managed_risk">
+          <input type="radio" name="review_type" value="managed_risk" onchange="onReviewType(this)" />
+          <div><div class="option-card-title">Managed risk</div><div class="option-card-desc">Moving an app to a managed risk tier with ongoing monitoring. Decision: CPO or XLT.</div></div>
+        </label>
+        <label class="option-card" id="card-other">
+          <input type="radio" name="review_type" value="other" onchange="onReviewType(this)" />
+          <div><div class="option-card-title">All other decisions</div><div class="option-card-desc">Any other API governance decision for lower-tier apps. Decision: GM/VP Ecosystem.</div></div>
+        </label>
       </div>
-
-      <div class="alert alert-info show" id="rapid-preview-alert" style="display:none!important;">
-        <strong>RAPID pathway loaded.</strong> Check the sidebar for who Recommends, Agrees, Performs, Inputs, and Decides for this review type.
-      </div>
-
       <div class="form-nav">
         <div></div>
         <div class="step-counter">Step 1 of 6</div>
@@ -517,46 +230,25 @@
       </div>
     </div>
 
-    <!-- ── STEP 1: App details ── -->
+    <!-- STEP 1 -->
     <div class="step-panel" id="panel-1">
       <div class="step-eyebrow">Step 2 of 6</div>
       <h1 class="step-heading">App details</h1>
-      <p class="step-subhead">Basic identifying information about the app partner being reviewed.</p>
-
+      <p class="step-subhead">Basic information about the app partner being reviewed.</p>
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">App name <span class="req">*</span></label>
-          <input type="text" id="app_name" placeholder="e.g. Business Fitness" />
+        <div class="field"><label class="field-label">App name <span class="req">*</span></label><input type="text" id="app_name" placeholder="e.g. Business Fitness" /></div>
+        <div class="field"><label class="field-label">App / Client ID</label><input type="text" id="app_id" placeholder="e.g. a7352e2a-8d4d-…" /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Customer segment <span class="req">*</span></label>
+          <select id="segment"><option value="">Select…</option><option>SMB only</option><option>AB only</option><option>SMB + AB</option></select>
         </div>
-        <div class="field">
-          <label class="field-label">App / Client ID <span class="req">*</span></label>
-          <input type="text" id="app_id" placeholder="e.g. a7352e2a-8d4d-…" />
+        <div class="field"><label class="field-label">Regional or global?</label>
+          <select id="scope"><option value="">Select…</option><option>Global</option><option>Regional</option></select>
         </div>
       </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label class="field-label">Customer segment <span class="req">*</span></label>
-          <select id="segment">
-            <option value="">Select…</option>
-            <option>SMB only</option>
-            <option>AB only</option>
-            <option>SMB + AB</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="field-label">Regional or global player? <span class="req">*</span></label>
-          <select id="scope">
-            <option value="">Select…</option>
-            <option>Global</option>
-            <option>Regional</option>
-          </select>
-        </div>
-      </div>
-
       <div class="field">
         <label class="field-label">Active markets</label>
-        <span class="field-hint">Select all markets where this app currently operates</span>
         <div class="check-grid">
           <label class="check-card"><input type="checkbox" name="markets" value="AU" /> Australia (AU)</label>
           <label class="check-card"><input type="checkbox" name="markets" value="NZ" /> New Zealand (NZ)</label>
@@ -568,46 +260,17 @@
           <label class="check-card"><input type="checkbox" name="markets" value="ZA" /> South Africa (ZA)</label>
         </div>
       </div>
-
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Active connections (orgs) <span class="req">*</span></label>
-          <input type="number" id="connections" placeholder="e.g. 76000" />
-        </div>
-        <div class="field">
-          <label class="field-label">Active ABs connected</label>
-          <input type="number" id="ab_count" placeholder="e.g. 445" />
-        </div>
+        <div class="field"><label class="field-label">Active connections (orgs) <span class="req">*</span></label><input type="number" id="connections" placeholder="e.g. 76000" /></div>
+        <div class="field"><label class="field-label">Active ABs connected</label><input type="number" id="ab_count" placeholder="e.g. 445" /></div>
       </div>
-
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Project Sentinel tier</label>
-          <select id="sentinel_tier">
-            <option value="">Select if known…</option>
-            <option>Core (50 orgs)</option>
-            <option>Plus (1000 orgs)</option>
-            <option>Advanced (10,000 orgs)</option>
-            <option>Enterprise 1 (20,000 orgs)</option>
-            <option>Enterprise 2 (500,000 orgs)</option>
-            <option>Enterprise 3 (100,000 orgs)</option>
-            <option>Enterprise 4 (250,000 orgs)</option>
-            <option>Enterprise 5 (500,000 orgs)</option>
-            <option>Bespoke</option>
-            <option>Not yet assessed</option>
-          </select>
+        <div class="field"><label class="field-label">Project Sentinel tier</label>
+          <select id="sentinel_tier"><option value="">Select if known…</option><option>Small</option><option>Medium</option><option>Large</option><option>Enterprise 1</option><option>Enterprise 2</option><option>Enterprise 3</option><option>Enterprise 4</option><option>Bespoke</option><option>Not yet assessed</option></select>
         </div>
-        <div class="field">
-          <label class="field-label">Partner since</label>
-          <input type="text" id="partner_since" placeholder="e.g. 2017 or ~3 years" />
-        </div>
+        <div class="field"><label class="field-label">Partner since</label><input type="text" id="partner_since" placeholder="e.g. 2017 or ~3 years" /></div>
       </div>
-
-      <div class="field">
-        <label class="field-label">Industry / Job to be done (JTBD) <span class="req">*</span></label>
-        <input type="text" id="jtbd" placeholder="e.g. Workpapers / Ledger & Reporting / Expense management" />
-      </div>
-
+      <div class="field"><label class="field-label">JTBD <span class="req">*</span></label><input type="text" id="jtbd" placeholder="e.g. Workpapers / Ledger & Reporting / Expense management" /></div>
       <div class="form-nav">
         <button class="btn btn-ghost" onclick="goTo(0)">← Back</button>
         <div class="step-counter">Step 2 of 6</div>
@@ -615,92 +278,45 @@
       </div>
     </div>
 
-    <!-- ── STEP 2: Framework assessment ── -->
+    <!-- STEP 2 -->
     <div class="step-panel" id="panel-2">
       <div class="step-eyebrow">Step 3 of 6</div>
       <h1 class="step-heading">Framework assessment</h1>
-      <p class="step-subhead">Assess the app against the API Access Framework to determine whether this requires an exception or escalation.</p>
-
+      <p class="step-subhead">Assess the app against the API Access Framework.</p>
       <div class="field">
         <label class="field-label">Does the app overlap with Xero core products? <span class="req">*</span></label>
-        <span class="field-hint">Core products: Ledger, Bank Rec, AB Ledger, Xero Tax (ANZ/CA/UK), Workpapers, Practice Management</span>
+        <span class="field-hint">Core: Ledger, Bank Rec, AB Ledger, Xero Tax (ANZ/CA/UK), Workpapers, Practice Management</span>
         <div class="option-cards" style="margin-top:8px;">
-          <label class="option-card" id="card-no_overlap">
-            <input type="radio" name="overlap" value="no" onchange="onOverlap(this)" />
-            <div>
-              <div class="option-card-title">No — app operates in a complementary space</div>
-              <div class="option-card-desc">No meaningful product, segment, or market overlap with Xero core</div>
-            </div>
-          </label>
-          <label class="option-card" id="card-yes_exception">
-            <input type="radio" name="overlap" value="yes_exception" onchange="onOverlap(this)" />
-            <div>
-              <div class="option-card-title">Yes — but submitting an exception request</div>
-              <div class="option-card-desc">Overlap exists but there is a strategic, regional, or commercial reason to approve access</div>
-            </div>
-          </label>
-          <label class="option-card" id="card-yes_deny">
-            <input type="radio" name="overlap" value="yes_deny" onchange="onOverlap(this)" />
-            <div>
-              <div class="option-card-title">Yes — recommending denial or restriction</div>
-              <div class="option-card-desc">Overlap with core and access should be denied or restricted per the framework</div>
-            </div>
-          </label>
+          <label class="option-card"><input type="radio" name="overlap" value="no" onchange="onOverlap(this)" /><div><div class="option-card-title">No — complementary space</div><div class="option-card-desc">No meaningful overlap with Xero core</div></div></label>
+          <label class="option-card"><input type="radio" name="overlap" value="yes_exception" onchange="onOverlap(this)" /><div><div class="option-card-title">Yes — requesting an exception</div><div class="option-card-desc">Overlap exists but there is a strategic reason to approve access</div></div></label>
+          <label class="option-card"><input type="radio" name="overlap" value="yes_deny" onchange="onOverlap(this)" /><div><div class="option-card-title">Yes — recommending denial or restriction</div><div class="option-card-desc">Overlap with core and access should be denied per the framework</div></div></label>
         </div>
       </div>
-
-      <div class="alert alert-warn" id="overlap-alert">
-        This case requires escalation to the Ecosystem Governance Forum. Your submission will be triaged by the Sr. Developer Engagement Manager (Josie Attard) before being presented to the forum for decision.
-      </div>
-
+      <div class="alert alert-warn" id="overlap-alert">This case requires escalation to the Ecosystem Governance Forum. Your submission will be triaged by Josie Attard before being presented to the forum.</div>
       <hr class="divider" />
       <div class="section-title">APIs currently accessed</div>
       <div class="check-grid">
-        <label class="check-card"><input type="checkbox" name="apis" value="accounting_full" /> Accounting API (full tx)</label>
-        <label class="check-card"><input type="checkbox" name="apis" value="accounting_reports" /> Accounting API (reports only)</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="accounting_full" /> Accounting API (full)</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="accounting_reports" /> Accounting API (reports)</label>
         <label class="check-card"><input type="checkbox" name="apis" value="accounting_tb" /> Accounting API (trial balance)</label>
         <label class="check-card"><input type="checkbox" name="apis" value="xpm" /> XPM (Practice Manager)</label>
         <label class="check-card"><input type="checkbox" name="apis" value="journals" /> Journals</label>
         <label class="check-card"><input type="checkbox" name="apis" value="invoices" /> Invoices</label>
-        <label class="check-card"><input type="checkbox" name="apis" value="bills" /> Bills</label>
-        <label class="check-card"><input type="checkbox" name="apis" value="invoices/bills" /> Payment Gateeway</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="contacts" /> Contacts</label>
         <label class="check-card"><input type="checkbox" name="apis" value="payroll" /> Payroll</label>
         <label class="check-card"><input type="checkbox" name="apis" value="bank_feeds" /> Bank feeds</label>
         <label class="check-card"><input type="checkbox" name="apis" value="files" /> Files / Attachments</label>
+        <label class="check-card"><input type="checkbox" name="apis" value="organisation" /> Organisation</label>
         <label class="check-card"><input type="checkbox" name="apis" value="other_api" /> Other</label>
       </div>
-
       <hr class="divider" />
       <div class="section-title">Quick health check</div>
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Growing with Xero?</label>
-          <select><option value="">Select…</option><option>Yes</option><option>No</option><option>Unclear</option></select>
-        </div>
-        <div class="field">
-          <label class="field-label">Drives orgs to Xero?</label>
-          <select><option value="">Select…</option><option>Yes</option><option>No</option><option>Unclear</option></select>
-        </div>
-        <div class="field">
-          <label class="field-label">Xero-only integration?</label>
-          <select><option value="">Select…</option><option>Yes — Xero only</option><option>No — integrates with competitors</option></select>
-        </div>
-        <div class="field">
-          <label class="field-label">Customer alternatives if removed?</label>
-          <select><option value="">Select…</option><option>Yes — alternatives exist</option><option>Partial</option><option>No — limited alternatives</option></select>
-        </div>
+        <div class="field"><label class="field-label">Growing with Xero?</label><select><option value="">Select…</option><option>Yes</option><option>No</option><option>Unclear</option></select></div>
+        <div class="field"><label class="field-label">Drives orgs to Xero?</label><select><option value="">Select…</option><option>Yes</option><option>No</option><option>Unclear</option></select></div>
+        <div class="field"><label class="field-label">Xero-only integration?</label><select><option value="">Select…</option><option>Yes</option><option>No — also integrates with competitors</option></select></div>
+        <div class="field"><label class="field-label">Alternatives if removed?</label><select><option value="">Select…</option><option>Yes</option><option>Partial</option><option>No</option></select></div>
       </div>
-
-      <div class="field">
-        <label class="field-label">Responsible data use</label>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
-          <label class="check-card"><input type="checkbox" id="check_2way" /> Agrees to 2-way sync for client record and Xero orgs</label>
-          <label class="check-card"><input type="checkbox" id="check_datause" /> Agrees to responsible data use approach</label>
-          <label class="check-card"><input type="checkbox" id="check_competitors" /> Integrates with Xero competitors</label>
-          <label class="check-card"><input type="checkbox" id="check_devterms" /> Currently compliant with Xero Developer Terms</label>
-        </div>
-      </div>
-
       <div class="form-nav">
         <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
         <div class="step-counter">Step 3 of 6</div>
@@ -708,41 +324,99 @@
       </div>
     </div>
 
-    <!-- ── STEP 3: Problem & recommendation ── -->
+    <!-- STEP 3 — AI ASSIST FIELDS -->
     <div class="step-panel" id="panel-3">
       <div class="step-eyebrow">Step 4 of 6</div>
       <h1 class="step-heading">Problem & recommendation</h1>
-      <p class="step-subhead">The core of your submission. The forum needs enough detail to make a decision — be specific about what's at stake and what you're asking for.</p>
+      <p class="step-subhead">The core of your submission. Use the ✦ AI button to draft any section based on what you've already filled in.</p>
 
       <div class="field">
-        <label class="field-label">What's the problem? <span class="req">*</span></label>
-        <span class="field-hint">Summarise the issue, why it matters, and what happens if no action is taken. Include any recent momentum or headwinds.</span>
-        <textarea id="problem" placeholder="e.g. App X was certified as a workpapers tool in 2017 but has since expanded to include a competing ledger product (released 2022) without re-certification. They are now actively targeting Small and Medium ABs — Xero's primary segment — and have caused an estimated 6.5k PE ledger churns to date…"></textarea>
+        <label class="field-label">Problem summary <span class="req">*</span></label>
+        <span class="field-hint">What's the issue, why it matters, and what happens if no action is taken.</span>
+        <div class="ai-field">
+          <textarea id="problem" rows="5" placeholder="e.g. App X was certified as a workpapers tool in 2017 but has since expanded to include a competing ledger product without re-certification…"></textarea>
+          <button class="ai-btn" onclick="aiDraft('problem')" id="ai-btn-problem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ✦ Draft with AI
+          </button>
+        </div>
+        <div class="ai-suggestion" id="ai-suggestion-problem">
+          <div class="ai-suggestion-label"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> AI suggestion — review before using</div>
+          <div id="ai-text-problem"></div>
+          <div class="ai-suggestion-actions">
+            <button class="ai-use-btn" onclick="useAiDraft('problem')">Use this draft</button>
+            <button class="ai-discard-btn" onclick="discardAiDraft('problem')">Discard</button>
+          </div>
+        </div>
       </div>
 
       <div class="field-row">
         <div class="field">
           <label class="field-label">Key risks <span class="req">*</span></label>
-          <span class="field-hint">Financial, competitive, reputational, legal, customer impact</span>
-          <textarea id="risks" style="min-height:120px;" placeholder="• Risk of PE ledger migration to app's competing product&#10;• Breach of Developer Terms (uncertified use case)&#10;• Reputational risk if approach inconsistent with prior decisions (e.g. MYOB, HandiSoft)&#10;• AB NPS impact if access abruptly removed"></textarea>
+          <span class="field-hint">Financial, competitive, reputational, legal</span>
+          <div class="ai-field">
+            <textarea id="risks" rows="5" placeholder="• Risk 1&#10;• Risk 2&#10;• Risk 3"></textarea>
+            <button class="ai-btn" onclick="aiDraft('risks')" id="ai-btn-risks">✦ Draft</button>
+          </div>
+          <div class="ai-suggestion" id="ai-suggestion-risks">
+            <div class="ai-suggestion-label">✦ AI suggestion</div>
+            <div id="ai-text-risks"></div>
+            <div class="ai-suggestion-actions">
+              <button class="ai-use-btn" onclick="useAiDraft('risks')">Use this</button>
+              <button class="ai-discard-btn" onclick="discardAiDraft('risks')">Discard</button>
+            </div>
+          </div>
         </div>
         <div class="field">
           <label class="field-label">Mitigants</label>
-          <span class="field-hint">Factors that reduce the severity of those risks</span>
-          <textarea id="mitigants" style="min-height:120px;" placeholder="• Comparable workpapers alternative available in AU market&#10;• Legal review completed (Ben Jacobs / Katie Dewar)&#10;• Grandfathering approach limits disruption to existing ABs&#10;• Commercial terms can be applied as condition of continued access"></textarea>
+          <span class="field-hint">What reduces the severity of those risks?</span>
+          <div class="ai-field">
+            <textarea id="mitigants" rows="5" placeholder="• Mitigant 1&#10;• Mitigant 2"></textarea>
+            <button class="ai-btn" onclick="aiDraft('mitigants')" id="ai-btn-mitigants">✦ Draft</button>
+          </div>
+          <div class="ai-suggestion" id="ai-suggestion-mitigants">
+            <div class="ai-suggestion-label">✦ AI suggestion</div>
+            <div id="ai-text-mitigants"></div>
+            <div class="ai-suggestion-actions">
+              <button class="ai-use-btn" onclick="useAiDraft('mitigants')">Use this</button>
+              <button class="ai-discard-btn" onclick="discardAiDraft('mitigants')">Discard</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="field">
         <label class="field-label">Recommended action <span class="req">*</span></label>
-        <span class="field-hint">Use dot points. Be explicit about exactly what you're asking the forum to approve.</span>
-        <textarea id="recommendation" placeholder="• Grandfather Accounting API access at the AB level for Active Workpapers only (existing ABs at existing access level)&#10;• Deny API access to Active Ledger & Reporting product&#10;• Deny new ABs full transaction access — restrict to Trial Balance only&#10;• Apply Project Sentinel pricing (~$5k/month)&#10;• Require BF to certify a new API token within 60 days"></textarea>
+        <span class="field-hint">Explicit dot points — exactly what you're asking the forum to approve.</span>
+        <div class="ai-field">
+          <textarea id="recommendation" rows="5" placeholder="• Action 1&#10;• Action 2&#10;• Action 3"></textarea>
+          <button class="ai-btn" onclick="aiDraft('recommendation')" id="ai-btn-recommendation">✦ Draft with AI</button>
+        </div>
+        <div class="ai-suggestion" id="ai-suggestion-recommendation">
+          <div class="ai-suggestion-label">✦ AI suggestion — review before using</div>
+          <div id="ai-text-recommendation"></div>
+          <div class="ai-suggestion-actions">
+            <button class="ai-use-btn" onclick="useAiDraft('recommendation')">Use this draft</button>
+            <button class="ai-discard-btn" onclick="discardAiDraft('recommendation')">Discard</button>
+          </div>
+        </div>
       </div>
 
       <div class="field">
         <label class="field-label">Options considered</label>
-        <span class="field-hint">At minimum two options required so the forum understands the trade-offs</span>
-        <textarea id="options_considered" placeholder="Option A — Status quo (do nothing): Full access maintained. Risk: continued ledger migration, no framework enforcement.&#10;Option B — Grandfather at AB level (recommended): Existing ABs retain access; new ABs restricted to TB. Ledger access removed.&#10;Option C — Full revocation: All access terminated. Risk: high AB backlash, potential anti-competitive perception."></textarea>
+        <span class="field-hint">At minimum two options so the forum understands trade-offs.</span>
+        <div class="ai-field">
+          <textarea id="options_considered" rows="4" placeholder="Option A — Status quo: …&#10;Option B — Recommended: …&#10;Option C — Full removal: …"></textarea>
+          <button class="ai-btn" onclick="aiDraft('options')" id="ai-btn-options">✦ Draft</button>
+        </div>
+        <div class="ai-suggestion" id="ai-suggestion-options">
+          <div class="ai-suggestion-label">✦ AI suggestion</div>
+          <div id="ai-text-options"></div>
+          <div class="ai-suggestion-actions">
+            <button class="ai-use-btn" onclick="useAiDraft('options')">Use this</button>
+            <button class="ai-discard-btn" onclick="discardAiDraft('options')">Discard</button>
+          </div>
+        </div>
       </div>
 
       <div class="form-nav">
@@ -752,60 +426,36 @@
       </div>
     </div>
 
-    <!-- ── STEP 4: Commercial impact ── -->
+    <!-- STEP 4 -->
     <div class="step-panel" id="panel-4">
       <div class="step-eyebrow">Step 5 of 6</div>
       <h1 class="step-heading">Commercial impact</h1>
-      <p class="step-subhead">Quantify the revenue and customer impact where possible. Finance will use this to validate ARR risk.</p>
-
+      <p class="step-subhead">Quantify revenue and customer impact where possible.</p>
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Estimated ARR at risk</label>
-          <input type="text" id="rev_risk" placeholder="e.g. $31.7M AUD (445 ABs × $42 ARPU)" />
-        </div>
-        <div class="field">
-          <label class="field-label">% partner-billed orgs</label>
-          <input type="text" id="partner_billed" placeholder="e.g. 70%" />
-        </div>
+        <div class="field"><label class="field-label">Estimated ARR at risk</label><input type="text" id="rev_risk" placeholder="e.g. $31.7M AUD (445 ABs × $42 ARPU)" /></div>
+        <div class="field"><label class="field-label">% partner-billed orgs</label><input type="text" id="partner_billed" placeholder="e.g. 70%" /></div>
       </div>
-
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Orgs active last 12 months</label>
-          <input type="number" id="orgs_12m" placeholder="e.g. 140916" />
-        </div>
-        <div class="field">
-          <label class="field-label">Orgs added last 3 months</label>
-          <input type="number" id="orgs_3m" placeholder="e.g. 4200" />
-        </div>
+        <div class="field"><label class="field-label">Orgs active last 12 months</label><input type="number" id="orgs_12m" placeholder="e.g. 140916" /></div>
+        <div class="field"><label class="field-label">Orgs added last 3 months</label><input type="number" id="orgs_3m" placeholder="e.g. 4200" /></div>
       </div>
-
-      <div class="field">
-        <label class="field-label">XAS rev share or commercial arrangement impact</label>
-        <textarea id="rev_share" style="min-height:70px;" placeholder="e.g. No current rev share in place. If Sentinel pricing applied at Enterprise 2 tier (~$5,126/month), estimated annual uplift of ~$61.5k NZD."></textarea>
-      </div>
-
       <div class="field">
         <label class="field-label">Proposed commercial terms</label>
-        <select id="commercial_terms">
-          <option value="">Select if applicable…</option>
-          <option>Project Sentinel — standard tier pricing</option>
-          <option>Bespoke / custom pricing</option>
-          <option>No commercial terms required</option>
-          <option>TBD / to be negotiated</option>
-        </select>
+        <select id="commercial_terms"><option value="">Select…</option><option>Project Sentinel — standard</option><option>Project Sentinel + overages</option><option>Bespoke / custom</option><option>XAS revenue share</option><option>No commercial terms required</option><option>TBD</option></select>
       </div>
-
+      <div class="field">
+        <label class="field-label">Revenue share / commercial notes</label>
+        <textarea id="rev_share" style="min-height:70px;" placeholder="e.g. No current rev share. Sentinel Enterprise 2 pricing would yield ~$61.5k NZD annually."></textarea>
+      </div>
       <hr class="divider" />
       <div class="section-title">Legal checklist</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <label class="check-card"><input type="checkbox" id="legal_terms" /> Developer Terms breach identified and documented in problem summary</label>
-        <label class="check-card"><input type="checkbox" id="legal_consistency" /> Consistency check completed against prior decisions for similar apps (e.g. MYOB, HandiSoft, Common Ledger)</label>
-        <label class="check-card"><input type="checkbox" id="legal_reviewed" /> Legal has been consulted (Katie Dewar)</label>
-        <label class="check-card"><input type="checkbox" id="legal_notice" /> Notice period requirements confirmed — minimum 60 days for breaking API changes</label>
-        <label class="check-card"><input type="checkbox" id="legal_anticomp" /> Anti-competitive language check completed — decision rationale reflects Xero's legitimate commercial interests only</label>
+        <label class="check-card"><input type="checkbox" /> Developer Terms breach identified and documented</label>
+        <label class="check-card"><input type="checkbox" /> Consistency check done against prior decisions (MYOB, HandiSoft, Common Ledger)</label>
+        <label class="check-card"><input type="checkbox" /> Legal consulted (Ben Jacobs / Katie Dewar)</label>
+        <label class="check-card"><input type="checkbox" /> Notice period confirmed — minimum 60 days for breaking changes</label>
+        <label class="check-card"><input type="checkbox" /> Anti-competitive language check complete</label>
       </div>
-
       <div class="form-nav">
         <button class="btn btn-ghost" onclick="goTo(3)">← Back</button>
         <div class="step-counter">Step 5 of 6</div>
@@ -813,290 +463,337 @@
       </div>
     </div>
 
-    <!-- ── STEP 5: Review & submit ── -->
+    <!-- STEP 5 -->
     <div class="step-panel" id="panel-5">
       <div class="step-eyebrow">Step 6 of 6</div>
       <h1 class="step-heading">Review & submit</h1>
-      <p class="step-subhead">Check the summary below, then submit to Josie Attard (Sr. Developer Engagement Manager) for triage.</p>
-
+      <p class="step-subhead">Check the summary, then submit to Josie Attard for triage.</p>
       <div class="alert alert-info show" id="decider-alert"></div>
-
       <div class="review-card">
         <div class="review-card-header">Submission summary</div>
         <div id="review-content"></div>
       </div>
-
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Your name <span class="req">*</span></label>
-          <input type="text" id="submitter_name" placeholder="Full name" />
-        </div>
-        <div class="field">
-          <label class="field-label">Your email <span class="req">*</span></label>
-          <input type="email" id="submitter_email" placeholder="you@xero.com" />
-        </div>
+        <div class="field"><label class="field-label">Your name <span class="req">*</span></label><input type="text" id="submitter_name" placeholder="Full name" /></div>
+        <div class="field"><label class="field-label">Your email <span class="req">*</span></label><input type="email" id="submitter_email" placeholder="you@xero.com" /></div>
       </div>
-
       <div class="field">
         <label class="field-label">Supporting links</label>
-        <span class="field-hint">Slack threads, data sheets, legal memos, Confluence pages — one per line</span>
-        <textarea id="links" style="min-height:70px;" placeholder="https://docs.google.com/...&#10;https://xero.slack.com/archives/..."></textarea>
+        <textarea id="links" style="min-height:60px;" placeholder="https://docs.google.com/…&#10;https://xero.slack.com/archives/…"></textarea>
       </div>
-
       <div class="field-row">
-        <div class="field">
-          <label class="field-label">Target decision date</label>
-          <input type="date" id="target_date" />
-        </div>
-        <div class="field">
-          <label class="field-label">Urgency</label>
-          <select id="urgency">
-            <option value="">Select…</option>
-            <option>Routine — next forum session</option>
-            <option>Elevated — within 2 weeks</option>
-            <option>Urgent — requires out-of-cycle decision</option>
-          </select>
+        <div class="field"><label class="field-label">Target decision date</label><input type="date" id="target_date" /></div>
+        <div class="field"><label class="field-label">Urgency</label>
+          <select id="urgency"><option value="">Select…</option><option>Routine — next forum session</option><option>Elevated — within 2 weeks</option><option>Urgent — requires out-of-cycle decision</option></select>
         </div>
       </div>
-
       <div class="form-nav">
         <button class="btn btn-ghost" onclick="goTo(4)">← Back</button>
         <div class="step-counter">Step 6 of 6</div>
-        <button class="btn btn-submit" onclick="handleSubmit()">Submit to EGF →</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="handleSubmit()">Submit to EGF →</button>
       </div>
     </div>
 
-    <!-- ── SUCCESS ── -->
+    <!-- SUCCESS -->
     <div class="success-screen" id="success-screen">
       <div class="success-icon">✓</div>
       <h2 class="success-heading">Submission received</h2>
-      <p class="success-sub">Your case has been submitted to Josie Attard for triage. You'll receive a confirmation email shortly, and the case will appear in the EGF tracker within one business day.</p>
-      <p style="margin-top:24px;font-size:13px;color:var(--ink-ghost);">Reference: <strong id="ref-number"></strong></p>
-      <button class="btn btn-ghost" style="margin-top:32px;" onclick="resetForm()">Submit another case</button>
+      <p class="success-sub">Your case has been submitted to the EGF tracker and Josie Attard has been notified.</p>
+      <p style="margin-top:8px;font-size:13px;color:var(--ink-ghost);">Reference: <strong id="ref-number"></strong></p>
+      <a href="egf-tracker.html" style="display:inline-block;margin-top:28px;" class="btn btn-primary">View in tracker →</a>
     </div>
 
   </main>
 </div>
 
 <script>
-  let currentStep = 0;
-  const TOTAL_STEPS = 6;
+// ── CONFIG — paste your values here after setup ──────────────────
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';  // From Google Apps Script deployment
+const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_API_KEY_HERE'; // From console.anthropic.com
+// ─────────────────────────────────────────────────────────────────
 
-  const RAPID_PATHS = {
-    api_access: [
-      ['R', 'Recommend', 'Sr. Developer Engagement Manager'],
-      ['A', 'Agree', 'Head of Ecosystem Governance'],
-      ['P', 'Perform', 'API Platform Eng · Partnerships · Ecosystem/DevRel'],
-      ['I', 'Input', 'Ecosystem · Finance · Legal · GTM regional leads'],
-      ['D', 'Decide', 'CPO or XLT (>10k cxns) / GM-VP Ecosystem (<10k cxns)']
-    ],
-    sentinel: [
-      ['R', 'Recommend', 'Sr. Developer Engagement Manager'],
-      ['A', 'Agree', 'Head of Ecosystem Governance'],
-      ['P', 'Perform', 'API Platform Eng · Partnerships · Ecosystem/DevRel'],
-      ['I', 'Input', 'Ecosystem · Finance · Legal · Partnerships AB/SB'],
-      ['D', 'Decide', 'CPO or XLT']
-    ],
-    managed_risk: [
-      ['R', 'Recommend', 'Sr. Developer Engagement Manager'],
-      ['A', 'Agree', 'Head of Ecosystem Governance'],
-      ['P', 'Perform', 'API Platform Eng · Partnerships · Ecosystem/DevRel'],
-      ['I', 'Input', 'Ecosystem · Finance · Legal · Partnerships AB/SB'],
-      ['D', 'Decide', 'CPO or XLT']
-    ],
-    other: [
-      ['R', 'Recommend', 'Sr. Developer Engagement Manager'],
-      ['A', 'Agree', 'Regional MDs · Product GMs/EGMs · Head of Eco Gov'],
-      ['P', 'Perform', 'API Platform Eng · Ecosystem Governance'],
-      ['I', 'Input', 'Ecosystem · Finance · Legal · Eco Growth'],
-      ['D', 'Decide', 'GM / VP Ecosystem']
-    ]
+let currentStep = 0;
+
+const RAPID_PATHS = {
+  api_access: [['R','Sr. Developer Engagement Manager'],['A','Head of Ecosystem Governance'],['P','API Platform Eng · Partnerships · Ecosystem'],['I','Ecosystem · Finance · Legal · GTM leads'],['D','CPO/XLT or GM-VP Ecosystem']],
+  sentinel:   [['R','Sr. Developer Engagement Manager'],['A','Head of Ecosystem Governance'],['P','API Platform Eng · Partnerships'],['I','Ecosystem · Finance · Legal'],['D','CPO or XLT']],
+  managed_risk:[['R','Sr. Developer Engagement Manager'],['A','Head of Ecosystem Governance'],['P','API Platform Eng · Partnerships'],['I','Ecosystem · Finance · Legal'],['D','CPO or XLT']],
+  other:      [['R','Sr. Developer Engagement Manager'],['A','Regional MDs · Product GMs'],['P','API Platform Eng · Ecosystem'],['I','Ecosystem · Finance · Legal'],['D','GM / VP Ecosystem']]
+};
+
+const DECIDERS = {
+  api_access: 'CPO or XLT (if >10,000 connections) / GM-VP Ecosystem (if <10,000 connections)',
+  sentinel: 'CPO or XLT',
+  managed_risk: 'CPO or XLT',
+  other: 'GM / VP Ecosystem'
+};
+
+// Check AI config
+window.addEventListener('DOMContentLoaded', () => {
+  if (ANTHROPIC_API_KEY !== 'YOUR_ANTHROPIC_API_KEY_HERE') {
+    document.getElementById('ai-banner').classList.add('hidden');
+  }
+});
+
+function goTo(n) {
+  document.getElementById('panel-' + currentStep).classList.remove('active');
+  document.getElementById('nav-' + currentStep).classList.remove('active');
+  if (n > currentStep) {
+    document.getElementById('nav-' + currentStep).classList.add('done');
+  }
+  currentStep = n;
+  document.getElementById('panel-' + n).classList.add('active');
+  document.getElementById('nav-' + n).classList.remove('done');
+  document.getElementById('nav-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 5) buildReview();
+}
+
+function onReviewType(el) {
+  document.querySelectorAll('.option-card').forEach(c => { if (c.querySelector('input[name=review_type]')) c.classList.remove('selected'); });
+  el.closest('.option-card').classList.add('selected');
+  const val = el.value;
+  const rows = RAPID_PATHS[val] || [];
+  document.getElementById('rapid-mini').innerHTML = rows.map(r => `<div class="rapid-row"><span class="rapid-letter">${r[0]}</span><span class="rapid-name">${r[1]}</span></div>`).join('');
+  document.getElementById('rapid-sidebar').style.display = 'block';
+}
+
+function onOverlap(el) {
+  document.querySelectorAll('input[name=overlap]').forEach(r => r.closest('.option-card').classList.remove('selected'));
+  el.closest('.option-card').classList.add('selected');
+  const alert = document.getElementById('overlap-alert');
+  alert.classList.toggle('show', el.value !== 'no');
+}
+
+function buildReview() {
+  const type = document.querySelector('input[name=review_type]:checked')?.value || '—';
+  const typeLabels = { api_access:'API access review', sentinel:'Sentinel pricing exemption', managed_risk:'Managed risk', other:'Other decision' };
+  const markets = Array.from(document.querySelectorAll('input[name=markets]:checked')).map(c => c.value).join(', ') || '—';
+  const rows = [
+    ['Review type', typeLabels[type] || type],
+    ['App name', document.getElementById('app_name')?.value || '—'],
+    ['Segment', document.getElementById('segment')?.value || '—'],
+    ['Markets', markets],
+    ['Connections', document.getElementById('connections')?.value || '—'],
+    ['JTBD', document.getElementById('jtbd')?.value || '—'],
+    ['ARR at risk', document.getElementById('rev_risk')?.value || '—'],
+    ['Problem', (document.getElementById('problem')?.value || '—').slice(0, 120) + '…'],
+    ['Recommendation', (document.getElementById('recommendation')?.value || '—').slice(0, 120) + '…'],
+  ];
+  document.getElementById('review-content').innerHTML = rows.map(r => `<div class="review-row"><div class="review-key">${r[0]}</div><div class="review-val">${r[1]}</div></div>`).join('');
+  const type2 = document.querySelector('input[name=review_type]:checked')?.value;
+  document.getElementById('decider-alert').textContent = 'Decision-maker: ' + (DECIDERS[type2] || '—');
+}
+
+// ── AI ASSIST ────────────────────────────────────────────────────
+
+function getContext() {
+  const type = document.querySelector('input[name=review_type]:checked')?.value || '';
+  const typeLabels = { api_access:'API access restriction/removal', sentinel:'Sentinel pricing exemption', managed_risk:'Managed risk review', other:'General governance decision' };
+  return {
+    reviewType: typeLabels[type] || type,
+    appName: document.getElementById('app_name')?.value || '',
+    segment: document.getElementById('segment')?.value || '',
+    markets: Array.from(document.querySelectorAll('input[name=markets]:checked')).map(c => c.value).join(', '),
+    connections: document.getElementById('connections')?.value || '',
+    abCount: document.getElementById('ab_count')?.value || '',
+    jtbd: document.getElementById('jtbd')?.value || '',
+    partnerSince: document.getElementById('partner_since')?.value || '',
+    sentinelTier: document.getElementById('sentinel_tier')?.value || '',
+    apis: Array.from(document.querySelectorAll('input[name=apis]:checked')).map(c => c.value).join(', '),
+    problem: document.getElementById('problem')?.value || '',
+    risks: document.getElementById('risks')?.value || '',
+    recommendation: document.getElementById('recommendation')?.value || '',
   };
+}
 
-  const DECIDER_LABELS = {
-    api_access: 'Decision-maker: CPO or XLT (if >10,000 connections) / GM-VP Ecosystem (if <10,000 connections)',
-    sentinel: 'Decision-maker: CPO or XLT',
-    managed_risk: 'Decision-maker: CPO or XLT',
-    other: 'Decision-maker: GM / VP Ecosystem'
-  };
+const AI_PROMPTS = {
+  problem: (ctx) => `You are helping a Xero Ecosystem Governance team member write a concise problem summary for an API governance submission.
 
-  function goTo(n) {
-    document.getElementById('panel-' + currentStep).classList.remove('active');
-    document.getElementById('nav-' + currentStep).classList.remove('active');
-    if (n > currentStep) {
-      document.getElementById('nav-' + currentStep).classList.add('done');
-      document.getElementById('dot-' + currentStep).textContent = '';
-    }
-    currentStep = n;
-    document.getElementById('panel-' + n).classList.add('active');
-    document.getElementById('nav-' + n).classList.remove('done');
-    document.getElementById('nav-' + n).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (n === 5) buildReview();
+Context:
+- Review type: ${ctx.reviewType}
+- App name: ${ctx.appName}
+- Customer segment: ${ctx.segment}
+- Active markets: ${ctx.markets}
+- Active connections (orgs): ${ctx.connections}
+- Active ABs: ${ctx.abCount}
+- JTBD: ${ctx.jtbd}
+- Partner since: ${ctx.partnerSince}
+- Sentinel tier: ${ctx.sentinelTier}
+- APIs accessed: ${ctx.apis}
+
+Write a 3-4 sentence problem summary that: (1) describes what the app does and why it's being reviewed, (2) explains the risk or issue to Xero's core products or strategy, (3) quantifies the impact where possible using the connection numbers provided. Be factual and direct. Do not use bullet points.`,
+
+  risks: (ctx) => `You are helping write key risks for a Xero API governance submission.
+
+Context:
+- Review type: ${ctx.reviewType}
+- App: ${ctx.appName} (${ctx.jtbd})
+- Segment: ${ctx.segment}, Markets: ${ctx.markets}
+- Connections: ${ctx.connections} orgs, ${ctx.abCount} ABs
+- APIs accessed: ${ctx.apis}
+- Problem summary: ${ctx.problem}
+
+Write 4-5 key risks as concise bullet points. Cover: financial risk, competitive risk, reputational risk, legal/Developer Terms risk, and customer impact. Each bullet should be one sentence.`,
+
+  mitigants: (ctx) => `You are helping write risk mitigants for a Xero API governance submission.
+
+Context:
+- App: ${ctx.appName}
+- Problem: ${ctx.problem}
+- Risks identified: ${ctx.risks}
+
+Write 3-4 mitigating factors as bullet points — things that reduce the severity of the risks identified. Consider: existing commercial terms, customer alternatives, grandfathering options, legal review status, and market context.`,
+
+  recommendation: (ctx) => `You are helping write a formal recommendation for a Xero Ecosystem Governance Forum submission.
+
+Context:
+- Review type: ${ctx.reviewType}
+- App: ${ctx.appName} (${ctx.jtbd})
+- Segment: ${ctx.segment}, Markets: ${ctx.markets}
+- Connections: ${ctx.connections} orgs
+- Problem: ${ctx.problem}
+- Key risks: ${ctx.risks}
+
+Write a clear, actionable recommendation as 3-5 explicit bullet points. Each point should be a specific action for the forum to approve (e.g. "Grandfather API access at AB level for existing connections", "Terminate access to [specific product]", "Apply Project Sentinel pricing"). Be specific and decisive.`,
+
+  options: (ctx) => `You are helping write options considered for a Xero API governance submission.
+
+Context:
+- App: ${ctx.appName}
+- Problem: ${ctx.problem}
+- Recommended action: ${ctx.recommendation}
+
+Write 3 options in this format:
+Option A — [Label]: Brief description. Pros/cons in one sentence.
+Option B — [Label] (Recommended): Brief description. Pros/cons.
+Option C — [Label]: Brief description. Pros/cons.
+
+Options should range from most open (do nothing / status quo) to most restrictive (full removal).`
+};
+
+async function aiDraft(field) {
+  if (ANTHROPIC_API_KEY === 'YOUR_ANTHROPIC_API_KEY_HERE') {
+    alert('AI assist is not configured yet.\n\nAdd your Anthropic API key to the ANTHROPIC_API_KEY variable in the form code.\n\nSee egf-setup-guide.html for instructions.');
+    return;
   }
 
-  function onReviewType(el) {
-    document.querySelectorAll('[id^=card-]').forEach(c => c.classList.remove('selected'));
-    el.closest('.option-card').classList.add('selected');
-    const val = el.value;
-    const sidebar = document.getElementById('rapid-sidebar');
-    const mini = document.getElementById('rapid-mini-content');
-    const rows = RAPID_PATHS[val] || [];
-    mini.innerHTML = rows.map(r =>
-      `<div class="rapid-row"><span class="rapid-letter">${r[0]}</span><span class="rapid-name">${r[2]}</span></div>`
-    ).join('');
-    sidebar.style.display = 'block';
-  }
+  const btn = document.getElementById(`ai-btn-${field}`);
+  const suggestion = document.getElementById(`ai-suggestion-${field}`);
+  const textEl = document.getElementById(`ai-text-${field}`);
 
-  function onOverlap(el) {
-    document.querySelectorAll('[id^=card-no_overlap],[id^=card-yes_exception],[id^=card-yes_deny]').forEach(c => c.classList.remove('selected'));
-    el.closest('.option-card').classList.add('selected');
-    const alert = document.getElementById('overlap-alert');
-    if (el.value === 'yes_exception' || el.value === 'yes_deny') {
-      alert.classList.add('show');
-    } else {
-      alert.classList.remove('show');
-    }
-  }
+  btn.classList.add('loading');
+  btn.textContent = '✦ Drafting…';
+  btn.disabled = true;
 
-  function buildReview() {
-    const type = document.querySelector('input[name=review_type]:checked')?.value || '—';
-    const typeLabels = {
-      api_access: 'API access restriction / removal / approval',
-      sentinel: 'Sentinel pricing exemption',
-      managed_risk: 'Managed risk',
-      other: 'Other decision'
-    };
-    const appName = document.getElementById('app_name')?.value || '—';
-    const appId = document.getElementById('app_id')?.value || '—';
-    const segment = document.getElementById('segment')?.value || '—';
-    const connections = document.getElementById('connections')?.value || '—';
-    const jtbd = document.getElementById('jtbd')?.value || '—';
-    const problem = document.getElementById('problem')?.value || '—';
-    const recommendation = document.getElementById('recommendation')?.value || '—';
-    const revRisk = document.getElementById('rev_risk')?.value || '—';
-    const submitterName = document.getElementById('submitter_name')?.value || '—';
+  const ctx = getContext();
+  const prompt = AI_PROMPTS[field]?.(ctx);
+  if (!prompt) return;
 
-    const markets = Array.from(document.querySelectorAll('input[name=markets]:checked')).map(c => c.value).join(', ') || '—';
-
-    const decider = DECIDER_LABELS[type] || '—';
-    document.getElementById('decider-alert').textContent = decider;
-
-    const rows = [
-      ['Review type', typeLabels[type] || type],
-      ['App name', appName],
-      ['App ID', appId],
-      ['Segment', segment],
-      ['Markets', markets],
-      ['Active connections', connections],
-      ['JTBD', jtbd],
-      ['ARR at risk', revRisk],
-      ['Problem (summary)', problem.length > 140 ? problem.slice(0, 140) + '…' : problem],
-      ['Recommendation', recommendation.length > 140 ? recommendation.slice(0, 140) + '…' : recommendation],
-    ];
-
-    document.getElementById('review-content').innerHTML = rows.map(r =>
-      `<div class="review-row"><div class="review-key">${r[0]}</div><div class="review-val">${r[1]}</div></div>`
-    ).join('');
-  }
-
-  // ── PASTE YOUR APPS SCRIPT URL HERE after setup ──
-  const SCRIPT_URL = 'https://script.google.com/a/macros/xero.com/s/AKfycbxmxoYo4yV-qeooX6QwBniENHB0N3gNPa0YDmolYZXcaGWkyQECtkEqq5jAAXv5UU8Y/exec';
-
-  async function handleSubmit() {
-    const name = document.getElementById('submitter_name')?.value?.trim();
-    const email = document.getElementById('submitter_email')?.value?.trim();
-    const appName = document.getElementById('app_name')?.value?.trim();
-    const problem = document.getElementById('problem')?.value?.trim();
-    const recommendation = document.getElementById('recommendation')?.value?.trim();
-
-    if (!name || !email || !appName || !problem || !recommendation) {
-      alert('Please complete all required fields: your name, email, app name, problem summary, and recommendation.');
-      return;
-    }
-
-    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      alert('Setup not complete — please paste your Apps Script URL into the form code first.\n\nSee egf-setup-guide.html for instructions.');
-      return;
-    }
-
-    const markets = Array.from(document.querySelectorAll('input[name=markets]:checked')).map(c => c.value).join(', ');
-    const type = document.querySelector('input[name=review_type]:checked')?.value || 'unknown';
-
-    const submission = {
-      action: 'submit',
-      type,
-      appName,
-      appId: document.getElementById('app_id')?.value || '',
-      segment: document.getElementById('segment')?.value || '',
-      markets,
-      jtbd: document.getElementById('jtbd')?.value || '',
-      connections: document.getElementById('connections')?.value || '',
-      abCount: document.getElementById('ab_count')?.value || '',
-      partnerSince: document.getElementById('partner_since')?.value || '',
-      sentinelTier: document.getElementById('sentinel_tier')?.value || '',
-      problem,
-      risks: document.getElementById('risks')?.value || '',
-      mitigants: document.getElementById('mitigants')?.value || '',
-      recommendation,
-      optionsConsidered: document.getElementById('options_considered')?.value || '',
-      revRisk: document.getElementById('rev_risk')?.value || '',
-      partnerBilled: document.getElementById('partner_billed')?.value || '',
-      orgs12m: document.getElementById('orgs_12m')?.value || '',
-      orgs3m: document.getElementById('orgs_3m')?.value || '',
-      commercialTerms: document.getElementById('commercial_terms')?.value || '',
-      urgency: document.getElementById('urgency')?.value || '',
-      targetDate: document.getElementById('target_date')?.value || '',
-      links: document.getElementById('links')?.value || '',
-      submitterName: name,
-      submitterEmail: email
-    };
-
-    // Show loading state
-    const submitBtn = document.querySelector('.btn-submit');
-    const origText = submitBtn.textContent;
-    submitBtn.textContent = 'Submitting…';
-    submitBtn.disabled = true;
-
-    try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(submission)
-      });
-      const result = await res.json();
-
-      if (result.success) {
-        document.getElementById('ref-number').textContent = result.ref;
-        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById('success-screen').classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); n.classList.add('done'); });
-      } else {
-        throw new Error(result.error || 'Unknown error');
-      }
-    } catch (err) {
-      submitBtn.textContent = origText;
-      submitBtn.disabled = false;
-      alert('Submission failed: ' + err.message + '\n\nPlease check your Apps Script URL is correct and the script is deployed as a web app.');
-    }
-
-    document.getElementById('ref-number').textContent = refNum;
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('success-screen').classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); n.classList.add('done'); });
-  }
-
-  function resetForm() {
-    document.getElementById('success-screen').classList.remove('active');
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach((n, i) => {
-      n.classList.remove('active', 'done');
-      n.querySelector('.step-dot').textContent = i + 1;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
-    currentStep = 0;
-    document.getElementById('panel-0').classList.add('active');
-    document.getElementById('nav-0').classList.add('active');
-    document.getElementById('rapid-sidebar').style.display = 'none';
+    const data = await res.json();
+    if (data.content?.[0]?.text) {
+      textEl.textContent = data.content[0].text;
+      suggestion.classList.add('show');
+    } else {
+      throw new Error(data.error?.message || 'No response from AI');
+    }
+  } catch (err) {
+    alert('AI draft failed: ' + err.message);
+  } finally {
+    btn.classList.remove('loading');
+    btn.textContent = field === 'problem' || field === 'recommendation' ? '✦ Draft with AI' : '✦ Draft';
+    btn.disabled = false;
   }
+}
+
+function useAiDraft(field) {
+  const textEl = document.getElementById(`ai-text-${field}`);
+  const fieldId = field === 'options' ? 'options_considered' : field;
+  const textarea = document.getElementById(fieldId);
+  if (textarea && textEl) textarea.value = textEl.textContent;
+  discardAiDraft(field);
+}
+
+function discardAiDraft(field) {
+  document.getElementById(`ai-suggestion-${field}`)?.classList.remove('show');
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────────
+
+async function handleSubmit() {
+  const name = document.getElementById('submitter_name')?.value?.trim();
+  const email = document.getElementById('submitter_email')?.value?.trim();
+  const appName = document.getElementById('app_name')?.value?.trim();
+  const problem = document.getElementById('problem')?.value?.trim();
+  const recommendation = document.getElementById('recommendation')?.value?.trim();
+
+  if (!name || !email || !appName || !problem || !recommendation) {
+    alert('Please complete all required fields: your name, email, app name, problem summary, and recommendation.');
+    return;
+  }
+
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    alert('Setup not complete — the Google Sheets URL has not been configured.\n\nSee egf-setup-guide.html for instructions.');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+
+  const markets = Array.from(document.querySelectorAll('input[name=markets]:checked')).map(c => c.value).join(', ');
+  const type = document.querySelector('input[name=review_type]:checked')?.value || '';
+
+  const payload = {
+    action: 'submit', type, appName,
+    appId: document.getElementById('app_id')?.value || '',
+    segment: document.getElementById('segment')?.value || '',
+    markets, jtbd: document.getElementById('jtbd')?.value || '',
+    connections: document.getElementById('connections')?.value || '',
+    abCount: document.getElementById('ab_count')?.value || '',
+    partnerSince: document.getElementById('partner_since')?.value || '',
+    sentinelTier: document.getElementById('sentinel_tier')?.value || '',
+    problem, risks: document.getElementById('risks')?.value || '',
+    mitigants: document.getElementById('mitigants')?.value || '',
+    recommendation, optionsConsidered: document.getElementById('options_considered')?.value || '',
+    revRisk: document.getElementById('rev_risk')?.value || '',
+    partnerBilled: document.getElementById('partner_billed')?.value || '',
+    orgs12m: document.getElementById('orgs_12m')?.value || '',
+    orgs3m: document.getElementById('orgs_3m')?.value || '',
+    commercialTerms: document.getElementById('commercial_terms')?.value || '',
+    urgency: document.getElementById('urgency')?.value || '',
+    targetDate: document.getElementById('target_date')?.value || '',
+    links: document.getElementById('links')?.value || '',
+    submitterName: name, submitterEmail: email
+  };
+
+  try {
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    if (result.success) {
+      document.getElementById('ref-number').textContent = result.ref;
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('success-screen').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); n.classList.add('done'); });
+    } else {
+      throw new Error(result.error || 'Unknown error');
+    }
+  } catch (err) {
+    btn.textContent = 'Submit to EGF →';
+    btn.disabled = false;
+    alert('Submission failed: ' + err.message + '\n\nCheck your Apps Script URL is correct and deployed as a web app with access set to "Anyone".');
+  }
+}
 </script>
 </body>
 </html>

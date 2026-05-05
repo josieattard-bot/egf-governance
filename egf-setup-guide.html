@@ -6,240 +6,241 @@
 <title>EGF — Setup Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --ink: #1a1a1a; --ink-mid: #555; --ink-light: #888; --ink-ghost: #bbb;
-    --surface: #fafaf8; --white: #fff; --rule: #e8e6e1; --accent-soft: #f0ede8;
-    --success: #1a6b3a; --success-bg: #ecfdf4;
-    --warn: #c45c1a; --warn-bg: #fef4ec;
-    --info: #1a5c8a; --info-bg: #ecf4fd;
-    --radius: 6px; --radius-lg: 10px;
-    --code-bg: #1e1e2e; --code-fg: #cdd6f4;
-  }
-  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--surface); color: var(--ink); line-height: 1.7; }
-  .site-header { background: var(--ink); color: white; padding: 0 40px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-family: 'DM Serif Display', serif; font-size: 17px; }
-  .brand span { opacity: 0.45; margin: 0 6px; }
-  .layout { display: flex; min-height: calc(100vh - 52px); }
-  .toc { width: 220px; flex-shrink: 0; background: white; border-right: 1px solid var(--rule); padding: 32px 20px; position: sticky; top: 0; height: calc(100vh - 52px); overflow-y: auto; }
-  .toc-label { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 12px; }
-  .toc a { display: block; font-size: 13px; color: var(--ink-light); text-decoration: none; padding: 5px 0; transition: color 0.15s; }
-  .toc a:hover { color: var(--ink); }
-  .toc .toc-step { display: flex; align-items: center; gap: 8px; }
-  .toc-num { width: 20px; height: 20px; border-radius: 50%; background: var(--rule); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; color: var(--ink-light); }
-  .main { flex: 1; padding: 52px 64px 100px; max-width: 740px; }
-  .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 10px; }
-  .page-title { font-family: 'DM Serif Display', serif; font-size: 36px; margin-bottom: 10px; line-height: 1.15; }
-  .page-sub { font-size: 14px; color: var(--ink-mid); max-width: 520px; margin-bottom: 48px; }
-  .step-block { margin-bottom: 52px; }
-  .step-num-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .step-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
-  .step-title { font-family: 'DM Serif Display', serif; font-size: 22px; }
-  .step-body { margin-left: 44px; }
-  .step-body p { font-size: 14px; color: var(--ink-mid); margin-bottom: 14px; }
-  ol.instructions { padding-left: 20px; }
-  ol.instructions li { font-size: 14px; color: var(--ink-mid); margin-bottom: 10px; line-height: 1.6; }
-  ol.instructions li strong { color: var(--ink); font-weight: 500; }
-  .screenshot-placeholder { border: 1px dashed var(--rule); border-radius: var(--radius-lg); padding: 32px; text-align: center; color: var(--ink-ghost); font-size: 13px; margin: 16px 0; background: var(--surface); }
-  code { font-family: 'Courier New', monospace; font-size: 12px; background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
-  .code-block { background: var(--code-bg); color: var(--code-fg); border-radius: var(--radius-lg); padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; margin: 16px 0; overflow-x: auto; white-space: pre; }
-  .alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; line-height: 1.5; margin: 16px 0; border-left: 3px solid; }
-  .alert-info { background: var(--info-bg); color: var(--info); border-color: var(--info); }
-  .alert-warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
-  .alert-success { background: var(--success-bg); color: var(--success); border-color: var(--success); }
-  .divider { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
-  .btn { display: inline-block; background: var(--ink); color: white; padding: 10px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 500; text-decoration: none; font-family: 'DM Sans', sans-serif; }
-  .files-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
-  .file-card { border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: 16px; background: white; }
-  .file-card .file-name { font-weight: 500; font-size: 13px; color: var(--ink); margin-bottom: 4px; font-family: monospace; }
-  .file-card .file-desc { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
-  .highlight-box { background: var(--accent-soft); border-radius: var(--radius-lg); padding: 20px 24px; margin: 16px 0; }
-  .highlight-box .label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 8px; }
-  @media (max-width: 768px) { .toc { display: none; } .main { padding: 32px 24px 60px; } .files-row { grid-template-columns: 1fr; } }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1a1a; --ink-mid: #555; --ink-light: #888; --ink-ghost: #bbb;
+  --surface: #fafaf8; --white: #fff; --rule: #e8e6e1; --accent: #f0ede8;
+  --success: #1a6b3a; --success-bg: #ecfdf4;
+  --warn: #c45c1a; --warn-bg: #fef4ec;
+  --info: #1a5c8a; --info-bg: #ecf4fd;
+  --danger: #c42b1a;
+  --ai: #5b3fa8; --ai-bg: #f2effe;
+  --radius: 6px; --radius-lg: 10px;
+}
+body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--surface); color: var(--ink); line-height: 1.7; }
+.site-header { background: var(--ink); color: white; padding: 0 40px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+.brand { font-family: 'DM Serif Display', serif; font-size: 17px; }
+.brand span { opacity: 0.4; margin: 0 6px; }
+.layout { max-width: 780px; margin: 0 auto; padding: 52px 40px 100px; }
+.page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 10px; }
+h1 { font-family: 'DM Serif Display', serif; font-size: 36px; margin-bottom: 10px; line-height: 1.15; }
+.page-sub { font-size: 14px; color: var(--ink-mid); margin-bottom: 48px; max-width: 560px; }
+
+.overview-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 24px 0 40px; }
+.overview-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: 16px 18px; }
+.overview-card .oc-title { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 4px; font-family: monospace; }
+.overview-card .oc-desc { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
+
+.step-block { margin-bottom: 48px; }
+.step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.step-circle { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0; }
+.step-circle.done { background: var(--success); }
+h2 { font-family: 'DM Serif Display', serif; font-size: 22px; }
+.step-body { margin-left: 50px; }
+.step-body p { font-size: 14px; color: var(--ink-mid); margin-bottom: 14px; line-height: 1.65; }
+ol { padding-left: 20px; }
+ol li { font-size: 14px; color: var(--ink-mid); margin-bottom: 12px; line-height: 1.65; }
+ol li strong { color: var(--ink); font-weight: 500; }
+code { font-family: 'Courier New', monospace; font-size: 12px; background: var(--accent); padding: 2px 7px; border-radius: 4px; color: var(--ink); }
+.code-block { background: #1e1e2e; color: #cdd6f4; border-radius: var(--radius-lg); padding: 18px 22px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.7; margin: 12px 0 18px; overflow-x: auto; white-space: pre; }
+.alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; line-height: 1.55; margin: 14px 0; border-left: 3px solid; }
+.alert-info { background: var(--info-bg); color: var(--info); border-color: var(--info); }
+.alert-warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+.alert-success { background: var(--success-bg); color: var(--success); border-color: var(--success); }
+.alert-ai { background: var(--ai-bg); color: var(--ai); border-color: var(--ai); }
+hr { border: none; border-top: 1px solid var(--rule); margin: 44px 0; }
+.settings-box { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: 18px 22px; margin: 14px 0; }
+.settings-box .sb-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 10px; }
+.settings-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row .sk { color: var(--ink-light); }
+.settings-row .sv { color: var(--ink); font-weight: 500; }
+@media (max-width: 680px) { .overview-grid { grid-template-columns: 1fr; } .step-body { margin-left: 0; } }
 </style>
 </head>
 <body>
-
 <header class="site-header">
   <div class="brand">Xero Ecosystem<span>·</span>Governance Forum</div>
-  <span style="font-size:12px;opacity:0.4;">Setup Guide</span>
+  <span style="font-size:12px;opacity:0.4;letter-spacing:0.06em;text-transform:uppercase;">Setup Guide</span>
 </header>
 
 <div class="layout">
-  <nav class="toc">
-    <div class="toc-label">Steps</div>
-    <a href="#overview" class="toc-step"><span class="toc-num">0</span> Overview</a>
-    <a href="#step1" class="toc-step"><span class="toc-num">1</span> Create spreadsheet</a>
-    <a href="#step2" class="toc-step"><span class="toc-num">2</span> Add Apps Script</a>
-    <a href="#step3" class="toc-step"><span class="toc-num">3</span> Deploy as web app</a>
-    <a href="#step4" class="toc-step"><span class="toc-num">4</span> Add URL to files</a>
-    <a href="#step5" class="toc-step"><span class="toc-num">5</span> Share with team</a>
-    <a href="#updates" class="toc-step"><span class="toc-num">6</span> Future updates</a>
-    <a href="#troubleshoot" class="toc-step"><span class="toc-num">7</span> Troubleshooting</a>
-  </nav>
+  <div class="page-eyebrow">One-time setup · ~25 minutes total</div>
+  <h1>Setup guide</h1>
+  <p class="page-sub">Follow these steps in order. You only do this once. After setup, the form and tracker are fully live — future code updates never affect your data.</p>
 
-  <main class="main">
-    <div class="page-eyebrow">EGF · One-time setup · ~20 minutes</div>
-    <h1 class="page-title">Setup guide</h1>
-    <p class="page-sub">Connect your form and tracker to Google Sheets so all submissions are stored centrally — no data loss when files are updated, and accessible by anyone in your team.</p>
+  <div class="overview-grid">
+    <div class="overview-card"><div class="oc-title">egf-submission-form.html</div><div class="oc-desc">The form your team fills in to submit cases. Hosted on GitHub Pages.</div></div>
+    <div class="overview-card"><div class="oc-title">egf-tracker.html</div><div class="oc-desc">Your live case management dashboard. Reads and writes to Google Sheets.</div></div>
+    <div class="overview-card"><div class="oc-title">egf-apps-script.gs</div><div class="oc-desc">The backend. Lives in Google Sheets and handles all data operations.</div></div>
+  </div>
 
-    <div id="overview" class="step-block">
-      <div class="step-num-row"><div class="step-circle">0</div><div class="step-title">How it works</div></div>
-      <div class="step-body">
-        <p>You have three files. Once set up, they connect like this:</p>
-        <div class="files-row">
-          <div class="file-card"><div class="file-name">egf-submission-form.html</div><div class="file-desc">Submitters fill this in. On submit, data is sent to your Google Sheet automatically.</div></div>
-          <div class="file-card"><div class="file-name">egf-tracker.html</div><div class="file-desc">You manage cases here. Reads live from the Sheet, updates status and notes back.</div></div>
-          <div class="file-card"><div class="file-name">egf-apps-script.gs</div><div class="file-desc">The glue. A Google Apps Script that receives data from the form and serves it to the tracker.</div></div>
-        </div>
-        <div class="alert alert-info" style="margin-top:20px;">The Apps Script acts as a secure API between your HTML files and Google Sheets. It runs on Google's servers — you don't need to host anything.</div>
-      </div>
+  <!-- STEP 1 -->
+  <div class="step-block" id="step1">
+    <div class="step-header"><div class="step-circle">1</div><h2>Create a Google Sheet</h2></div>
+    <div class="step-body">
+      <p>This Sheet is your permanent database. You only create it once and never need to touch it again.</p>
+      <ol>
+        <li>Go to <strong>sheets.google.com</strong></li>
+        <li>Click <strong>+ Blank spreadsheet</strong></li>
+        <li>Click "Untitled spreadsheet" at the top and rename it <strong>EGF Submissions</strong></li>
+        <li>Leave it empty — the script creates all columns automatically on first use</li>
+        <li>Keep this tab open for the next step</li>
+      </ol>
+      <div class="alert alert-info">Move this Sheet into a shared team Drive folder so Regan and forum members can access the raw data if needed.</div>
     </div>
+  </div>
 
-    <hr class="divider" />
-
-    <div id="step1" class="step-block">
-      <div class="step-num-row"><div class="step-circle">1</div><div class="step-title">Create a Google Sheet</div></div>
-      <div class="step-body">
-        <p>This Sheet will store all EGF submissions permanently. You only create it once.</p>
-        <ol class="instructions">
-          <li>Go to <strong>sheets.google.com</strong> and click <strong>+ Blank</strong></li>
-          <li>Name it <strong>"EGF Submissions"</strong> (top left, click "Untitled spreadsheet")</li>
-          <li>Leave it empty — the Apps Script will create the header row and formatting automatically on the first submission</li>
-          <li>Keep this tab open — you'll need it in Step 2</li>
-        </ol>
-        <div class="alert alert-info">Tip: Move this Sheet into a shared team Drive folder so the whole governance team has access to the raw data as a backup.</div>
-      </div>
+  <!-- STEP 2 -->
+  <div class="step-block" id="step2">
+    <div class="step-header"><div class="step-circle">2</div><h2>Add the Apps Script</h2></div>
+    <div class="step-body">
+      <p>The Apps Script is the code that receives submissions and serves data to the tracker. It runs inside your Google Sheet.</p>
+      <ol>
+        <li>In your Google Sheet, click <strong>Extensions → Apps Script</strong> in the top menu bar</li>
+        <li>A new browser tab opens with a code editor showing some default code</li>
+        <li><strong>Select all the default code and delete it</strong> (Ctrl+A then Delete)</li>
+        <li>Open <code>egf-apps-script.gs</code> in a text editor on your computer</li>
+        <li><strong>Copy everything</strong> and paste it into the Apps Script editor</li>
+        <li>Click the <strong>💾 Save icon</strong> (or press Ctrl+S / Cmd+S)</li>
+        <li>When prompted to name the project, type <strong>EGF Handler</strong> and click OK</li>
+      </ol>
+      <div class="alert alert-warn">Don't close this tab — you need it for the next step.</div>
     </div>
+  </div>
 
-    <hr class="divider" />
-
-    <div id="step2" class="step-block">
-      <div class="step-num-row"><div class="step-circle">2</div><div class="step-title">Add the Apps Script</div></div>
-      <div class="step-body">
-        <p>You'll paste the Apps Script code into Google's script editor, which is built into your Sheet.</p>
-        <ol class="instructions">
-          <li>In your Google Sheet, click <strong>Extensions → Apps Script</strong> in the top menu</li>
-          <li>A new tab opens showing a code editor with some default code. <strong>Delete everything</strong> in the editor</li>
-          <li>Open the file <code>egf-apps-script.gs</code> in a text editor (Notepad, TextEdit, or VS Code)</li>
-          <li><strong>Copy the entire contents</strong> and paste it into the Apps Script editor</li>
-          <li>If you want submissions emailed to a different address, find this line near the top and update it:
-            <div class="code-block">const NOTIFY_EMAIL = 'josie.attard@xero.com';</div>
-          </li>
-          <li>Click the <strong>💾 Save</strong> icon (or Cmd/Ctrl + S). Name the project <strong>"EGF Handler"</strong> when prompted</li>
-        </ol>
-        <div class="alert alert-warn">Don't close this tab yet — you need to deploy it in the next step.</div>
+  <!-- STEP 3 -->
+  <div class="step-block" id="step3">
+    <div class="step-header"><div class="step-circle">3</div><h2>Deploy as a web app and copy the URL</h2></div>
+    <div class="step-body">
+      <p>Deploying turns your script into a URL that the form and tracker can talk to. This is the most important step.</p>
+      <ol>
+        <li>In the Apps Script editor, click the blue <strong>Deploy</strong> button (top right)</li>
+        <li>Click <strong>New deployment</strong></li>
+        <li>Click the <strong>⚙ gear icon</strong> next to "Select type" and choose <strong>Web app</strong></li>
+        <li>Fill in the settings exactly as shown below:</li>
+      </ol>
+      <div class="settings-box">
+        <div class="sb-label">Required deployment settings</div>
+        <div class="settings-row"><span class="sk">Description</span><span class="sv">EGF Handler v1</span></div>
+        <div class="settings-row"><span class="sk">Execute as</span><span class="sv">Me (your Google account)</span></div>
+        <div class="settings-row"><span class="sk">Who has access</span><span class="sv">Anyone ← important</span></div>
       </div>
+      <ol start="5">
+        <li>Click <strong>Deploy</strong></li>
+        <li>Google will ask you to <strong>authorise the app</strong> — click "Authorise access"</li>
+        <li>Sign in with your Xero Google account and click <strong>Allow</strong></li>
+      </ol>
+      <div class="alert alert-warn">If Google shows a warning saying "This app isn't verified" — click <strong>Advanced</strong> then <strong>Go to EGF Handler (unsafe)</strong>. This is normal for internal scripts.</div>
+      <ol start="8">
+        <li>After authorising you'll see a screen with a <strong>Web app URL</strong>. It looks like this:</li>
+      </ol>
+      <div class="code-block">https://script.google.com/macros/s/AKfycbXXXXXXXXXXXXXXXXXXXX/exec</div>
+      <ol start="9">
+        <li><strong>Copy this URL</strong> — you need it in the next step. Keep it safe, don't share it publicly.</li>
+      </ol>
+      <div class="alert alert-success">✓ You now have your Apps Script URL. This never changes unless you explicitly delete the deployment.</div>
     </div>
+  </div>
 
-    <hr class="divider" />
+  <!-- STEP 4 -->
+  <div class="step-block" id="step4">
+    <div class="step-header"><div class="step-circle">4</div><h2>Add the URL to your GitHub files</h2></div>
+    <div class="step-body">
+      <p>You need to paste your Apps Script URL into two files on GitHub. Here's exactly how to do it for each file.</p>
 
-    <div id="step3" class="step-block">
-      <div class="step-num-row"><div class="step-circle">3</div><div class="step-title">Deploy as a web app</div></div>
-      <div class="step-body">
-        <p>Deploying turns your script into a URL that the form and tracker can talk to. This is the most important step.</p>
-        <ol class="instructions">
-          <li>In the Apps Script editor, click <strong>Deploy → New deployment</strong> (top right button)</li>
-          <li>Click the gear icon ⚙ next to "Select type" and choose <strong>Web app</strong></li>
-          <li>Fill in the deployment settings:
-            <div class="highlight-box">
-              <div class="label">Required settings</div>
-              <strong>Description:</strong> EGF Submission Handler v1<br/>
-              <strong>Execute as:</strong> Me (your Google account)<br/>
-              <strong>Who has access:</strong> Anyone
-            </div>
-          </li>
-          <li>Click <strong>Deploy</strong></li>
-          <li>Google will ask you to <strong>authorise the app</strong> — click "Authorise access", sign in with your Xero Google account, and click "Allow". This lets the script read/write your Sheet and send emails on your behalf.</li>
-          <li>After authorising, you'll see a screen with a <strong>Web app URL</strong>. It looks like:<div class="code-block">https://script.google.com/macros/s/AKfycb.../exec</div></li>
-          <li><strong>Copy this URL</strong> — you'll need it in the next step</li>
-        </ol>
-        <div class="alert alert-warn">⚠ Keep this URL private — anyone with it can submit to your Sheet. Don't post it publicly.</div>
-        <div class="alert alert-info">If Google shows a warning saying "This app isn't verified" — click <strong>Advanced → Go to EGF Handler (unsafe)</strong>. This is normal for internal scripts that haven't gone through Google's verification process.</div>
-      </div>
+      <p><strong>For egf-submission-form.html:</strong></p>
+      <ol>
+        <li>Go to <strong>github.com/josieattard-bot/egf-governance</strong></li>
+        <li>Click on <strong>egf-submission-form.html</strong></li>
+        <li>Click the <strong>✏ pencil icon</strong> (Edit this file)</li>
+        <li>Press <strong>Ctrl+F</strong> (or Cmd+F on Mac) to open find — search for <code>YOUR_APPS_SCRIPT_URL_HERE</code></li>
+        <li>Replace it with your URL so the line looks exactly like this (keep the quotes):</li>
+      </ol>
+      <div class="code-block">const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb.../exec';</div>
+      <ol start="6">
+        <li>Scroll down and click <strong>Commit changes</strong> → <strong>Commit changes</strong> again</li>
+      </ol>
+
+      <p><strong>For egf-tracker.html:</strong></p>
+      <ol>
+        <li>Go back to the repo, click <strong>egf-tracker.html</strong></li>
+        <li>Click the <strong>✏ pencil icon</strong></li>
+        <li>Search for <code>YOUR_APPS_SCRIPT_URL_HERE</code> and replace with your URL exactly as above</li>
+        <li>Click <strong>Commit changes</strong> → <strong>Commit changes</strong></li>
+      </ol>
+      <div class="alert alert-success">✓ Wait about 60 seconds for GitHub to rebuild, then test your form at:<br/><strong>https://josieattard-bot.github.io/egf-governance/egf-submission-form.html</strong></div>
     </div>
+  </div>
 
-    <hr class="divider" />
-
-    <div id="step4" class="step-block">
-      <div class="step-num-row"><div class="step-circle">4</div><div class="step-title">Paste the URL into both HTML files</div></div>
-      <div class="step-body">
-        <p>Open both HTML files in a text editor and replace the placeholder with your real Apps Script URL.</p>
-        <ol class="instructions">
-          <li>Open <code>egf-submission-form.html</code> in a text editor</li>
-          <li>Find this line near the bottom of the file:
-            <div class="code-block">const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';</div>
-          </li>
-          <li>Replace <code>YOUR_APPS_SCRIPT_URL_HERE</code> with your URL (keep the quotes):
-            <div class="code-block">const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb.../exec';</div>
-          </li>
-          <li>Save the file</li>
-          <li>Repeat steps 1–4 for <code>egf-tracker.html</code> — it has the same placeholder line near the bottom</li>
-        </ol>
-        <div class="alert alert-success">✓ Once both files have the URL, the setup is complete. Test it by opening the form, filling it in, and submitting — then open the tracker and click Refresh to see the submission appear.</div>
-      </div>
+  <!-- STEP 5 — AI -->
+  <div class="step-block" id="ai-setup">
+    <div class="step-header"><div class="step-circle">5</div><h2>Set up AI assist (optional)</h2></div>
+    <div class="step-body">
+      <p>The AI assist feature uses the Claude API to help users draft their problem summary, risks, recommendation, and options. It's optional — the form works fully without it.</p>
+      <div class="alert alert-warn">⚠ Your API key will be visible in the HTML file on GitHub. Only enable this if your GitHub repo is private, or if you are comfortable with the key being visible. Consider creating a restricted API key at console.anthropic.com.</div>
+      <ol>
+        <li>Go to <strong>console.anthropic.com</strong> and sign in (or create an account)</li>
+        <li>Click <strong>API Keys → Create Key</strong></li>
+        <li>Name it <strong>EGF Form</strong> and copy the key (starts with <code>sk-ant-…</code>)</li>
+        <li>In GitHub, edit <strong>egf-submission-form.html</strong> and find this line:</li>
+      </ol>
+      <div class="code-block">const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_API_KEY_HERE';</div>
+      <ol start="5">
+        <li>Replace <code>YOUR_ANTHROPIC_API_KEY_HERE</code> with your key and commit</li>
+      </ol>
+      <div class="alert alert-ai">Once the API key is added, the ✦ Draft with AI buttons activate on the Problem & Recommendation step. The AI uses everything the submitter has filled in (app name, segment, connections, JTBD, APIs accessed) to generate a contextual draft. Submitters review and edit before using it.</div>
     </div>
+  </div>
 
-    <hr class="divider" />
-
-    <div id="step5" class="step-block">
-      <div class="step-num-row"><div class="step-circle">5</div><div class="step-title">Share with your team</div></div>
-      <div class="step-body">
-        <p>Now that the files are connected to Sheets, anyone can use them — they just need access to the files.</p>
-        <ol class="instructions">
-          <li>Upload both HTML files (<code>egf-submission-form.html</code> and <code>egf-tracker.html</code>) to a shared Google Drive folder</li>
-          <li>For the <strong>submission form</strong>: share the link with anyone who needs to submit cases (DE managers, regional leads, etc.)</li>
-          <li>For the <strong>tracker</strong>: share with the governance team only (Josie, Regan, and forum members)</li>
-          <li>To open an HTML file from Google Drive: right-click → <strong>Open with → Google Chrome</strong></li>
-        </ol>
-        <div class="alert alert-info">Alternatively, embed either file in a Confluence page using the <strong>HTML macro</strong> (Insert → Other Macros → HTML). This gives a permanent internal URL that anyone can bookmark — no Drive required.</div>
-      </div>
+  <!-- STEP 6 -->
+  <div class="step-block" id="step6">
+    <div class="step-header"><div class="step-circle">6</div><h2>Share with your team</h2></div>
+    <div class="step-body">
+      <p>Your live URLs — bookmark these and share them:</p>
+      <div class="code-block">Form:    https://josieattard-bot.github.io/egf-governance/egf-submission-form.html
+Tracker: https://josieattard-bot.github.io/egf-governance/egf-tracker.html
+Guide:   https://josieattard-bot.github.io/egf-governance/egf-setup-guide.html</div>
+      <ol>
+        <li>Share the <strong>form link</strong> with anyone who submits cases (DE managers, regional leads, partnerships)</li>
+        <li>Share the <strong>tracker link</strong> with governance team only (Josie, Regan, forum members)</li>
+        <li>The tracker reads live from Google Sheets — click <strong>↻ Refresh</strong> to pull latest submissions</li>
+      </ol>
     </div>
+  </div>
 
-    <hr class="divider" />
+  <hr />
 
-    <div id="updates" class="step-block">
-      <div class="step-num-row"><div class="step-circle">6</div><div class="step-title">Future code updates</div></div>
-      <div class="step-body">
-        <p>This is the key improvement over the old local storage approach.</p>
-        <ol class="instructions">
-          <li>When you get updated HTML files, open them in a text editor and find the <code>SCRIPT_URL</code> line</li>
-          <li>Paste in your Apps Script URL (same one as before)</li>
-          <li>Upload the new files to Drive, replacing the old ones</li>
-          <li><strong>All your submissions in Google Sheets are completely unaffected</strong> — the Sheet is separate from the HTML files</li>
-        </ol>
-        <div class="alert alert-success">✓ If the Apps Script itself needs updating, deploy a new version in Apps Script (Deploy → Manage deployments → Edit → New version) — the URL stays the same.</div>
-      </div>
+  <!-- FUTURE UPDATES -->
+  <div class="step-block">
+    <div class="step-header"><div class="step-circle" style="background:var(--ink-mid);">↻</div><h2>Future code updates</h2></div>
+    <div class="step-body">
+      <p>When you get updated files from Claude:</p>
+      <ol>
+        <li>Go to the file on GitHub, click the <strong>✏ pencil</strong>, select all and replace with the new code</li>
+        <li>Search for <code>YOUR_APPS_SCRIPT_URL_HERE</code> and paste your URL back in</li>
+        <li>If AI is set up, also replace <code>YOUR_ANTHROPIC_API_KEY_HERE</code></li>
+        <li>Commit — done. <strong>Your Google Sheets data is completely unaffected.</strong></li>
+      </ol>
+      <div class="alert alert-success">✓ This is the key improvement. The data lives in Google Sheets permanently — updating the HTML files never touches it.</div>
     </div>
+  </div>
 
-    <hr class="divider" />
+  <hr />
 
-    <div id="troubleshoot" class="step-block">
-      <div class="step-num-row"><div class="step-circle">7</div><div class="step-title">Troubleshooting</div></div>
-      <div class="step-body">
-        <p style="margin-bottom:20px;">Common issues and fixes:</p>
-
-        <p><strong>Form says "Setup not complete"</strong><br/>
-        You haven't pasted the Apps Script URL into the form file yet. See Step 4.</p>
-
-        <p><strong>Tracker shows "Could not connect to Google Sheets"</strong><br/>
-        Check that: (1) the URL in the tracker file matches your deployed URL exactly, (2) the deployment is set to "Anyone" for access, (3) you authorised the script in Step 3.</p>
-
-        <p><strong>Google shows "This app isn't verified" warning</strong><br/>
-        This is expected for internal scripts. Click <strong>Advanced → Go to EGF Handler (unsafe)</strong> to proceed.</p>
-
-        <p><strong>Submissions aren't appearing in the Sheet</strong><br/>
-        Open the Apps Script editor and click <strong>Run → doGet</strong> to test it manually. Check the execution log (View → Executions) for errors.</p>
-
-        <p><strong>No email notification on submission</strong><br/>
-        The script sends email using your Google account. Make sure you granted Gmail permissions during authorisation. Check your Sent folder — if nothing is there, re-deploy the script and re-authorise.</p>
-
-        <p><strong>Need to re-deploy after changes</strong><br/>
-        Go to Apps Script → Deploy → Manage deployments → click the pencil ✏ → change version to "New version" → Deploy. The URL doesn't change.</p>
-      </div>
+  <!-- TROUBLESHOOTING -->
+  <div class="step-block">
+    <div class="step-header"><div class="step-circle" style="background:var(--warn);">?</div><h2>Troubleshooting</h2></div>
+    <div class="step-body">
+      <p><strong>Form says "Setup not complete"</strong><br/>The Apps Script URL hasn't been pasted in yet. Go to Step 4.</p>
+      <p><strong>Tracker shows a red error bar</strong><br/>Check: (1) the URL in the tracker file is correct, (2) the deployment has "Who has access: Anyone", (3) you completed the authorisation in Step 3.</p>
+      <p><strong>"This app isn't verified" Google warning</strong><br/>Click Advanced → Go to EGF Handler (unsafe). Normal for internal scripts.</p>
+      <p><strong>No email notification received</strong><br/>Open Apps Script → Executions (left sidebar) to check for errors. Make sure Gmail permission was granted during authorisation.</p>
+      <p><strong>Need to re-deploy after editing the Apps Script</strong><br/>Deploy → Manage deployments → click ✏ → set version to "New version" → Deploy. URL stays the same.</p>
+      <p><strong>AI buttons don't appear / show error</strong><br/>Check the API key is pasted correctly with no extra spaces. Make sure it starts with <code>sk-ant-</code>. Check the browser console (F12) for specific error messages.</p>
     </div>
+  </div>
 
-  </main>
 </div>
 </body>
 </html>
