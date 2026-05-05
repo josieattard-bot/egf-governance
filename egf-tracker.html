@@ -221,7 +221,7 @@ td { padding: 12px 14px; vertical-align: middle; }
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────
-const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/a/macros/xero.com/s/AKfycbx8QIISh1llTa-7Js6zdo8KWdCz8pUQ7pI8QiGrMolrborxbu4Q_dMdHHHlsgRzgBS1/exec';
 // ─────────────────────────────────────────────────────────────────
 
 const RAPID_PATHS = {
@@ -241,7 +241,7 @@ let sortDirs = {};
 function showLoading(on) { document.getElementById('loading-bar').classList.toggle('show', on); }
 
 async function loadSubmissions() {
-  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+  if (SCRIPT_URL === 'https://script.google.com/a/macros/xero.com/s/AKfycbx8QIISh1llTa-7Js6zdo8KWdCz8pUQ7pI8QiGrMolrborxbu4Q_dMdHHHlsgRzgBS1/exec') {
     document.getElementById('error-bar').classList.add('show');
     document.getElementById('error-bar').textContent = '⚠ Apps Script URL not configured. See setup guide to get started.';
     return;
@@ -272,7 +272,7 @@ async function loadSubmissions() {
 }
 
 async function patchSheet(action, ref, data) {
-  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  if (SCRIPT_URL === 'https://script.google.com/a/macros/xero.com/s/AKfycbx8QIISh1llTa-7Js6zdo8KWdCz8pUQ7pI8QiGrMolrborxbu4Q_dMdHHHlsgRzgBS1/exec') return;
   try { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action, ref, ...data }) }); } catch(e) {}
 }
 
